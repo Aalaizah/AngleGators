@@ -2,4 +2,4 @@
 A python game for the XO laptops to teach angle measurements
 
 ### Game Idea Blog Post
-[AngleGators](https://ghost-alexandriamack.rhcloud/curriculum)
+[AngleGators](http://ghost-alexandriamack.rhcloud.com/curriculum/)
