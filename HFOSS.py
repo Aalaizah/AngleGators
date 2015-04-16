@@ -1,7 +1,15 @@
 #!/usr/bin/python
 import pygame
 from gi.repository import Gtk
+from enum import Enum
 
+# TODO: move to a separate file?
+class GameState(Enum):
+	Menu = 0
+	Playing = 1
+	Paused = 2
+	HowTo = 3
+	Credits = 4
 
 class HFOSS:
     def __init__(self):
@@ -16,6 +24,7 @@ class HFOSS:
 
         self.paused = False
         self.direction = 1
+        self.currentState = GameState.Menu
 
     def set_paused(self, paused):
         self.paused = paused
@@ -33,6 +42,10 @@ class HFOSS:
         self.running = True
 
         screen = pygame.display.get_surface()
+
+        if self.currentState == GameState.Menu:
+            # TODO: game menu init here
+            print('menu screen')
 
         while self.running:
             # Pump GTK messages.
