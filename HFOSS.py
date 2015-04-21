@@ -63,6 +63,8 @@ class HFOSS:
                         self.direction = -1
                     elif event.key == pygame.K_RIGHT:
                         self.direction = 1
+                    elif event.key == pygame.K_ESCAPE:
+                        pygame.event.post(QUIT)
 
             # Move the ball
             if not self.paused:
