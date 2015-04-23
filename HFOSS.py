@@ -46,6 +46,7 @@ class HFOSS:
         if self.currentState == GameState.Menu:
             # TODO: game menu init here
             print('menu screen')
+            
 
         while self.running:
             # Pump GTK messages.
@@ -64,7 +65,7 @@ class HFOSS:
                     elif event.key == pygame.K_RIGHT:
                         self.direction = 1
                     elif event.key == pygame.K_ESCAPE:
-                        pygame.event.post(QUIT)
+                        pygame.event.post(Quit)
 
             # Move the ball
             if not self.paused:
@@ -85,7 +86,13 @@ class HFOSS:
             screen.fill((255, 255, 255))  # 255 for white
 
             # Draw the ball
-            pygame.draw.circle(screen, (255, 0, 0), (self.x, self.y), 100)
+            #pygame.draw.circle(screen, (255, 0, 0), (self.x, self.y), 100)
+# Select the font to use, size, bold, italics
+            font = pygame.font.SysFont('Calibri', 25, True, False)
+        # Render the text. "True" means anti-aliased text
+            text = font.render("AngleGators", True, (0, 0, 0))
+
+            screen.blit(text, [250,250])
 
             # Flip Display
             pygame.display.flip()
