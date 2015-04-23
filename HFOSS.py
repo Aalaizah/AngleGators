@@ -42,10 +42,25 @@ class HFOSS:
         self.running = True
 
         screen = pygame.display.get_surface()
+        font = pygame.font.SysFont('Calibri', 25, True, False)
 
         if self.currentState == GameState.Menu:
             # TODO: game menu init here
             print('menu screen')
+            text = font.render("AngleGators", True, (0, 0, 0))
+        elif self.currentState == GameState.Playing:
+            text = font.render("This will be the main game screen", True, (0, 0, 0))
+            print('playing')
+        elif self.currentState == GameState.Paused:
+            print('paused')
+            text = font.render("The game is paused", True, (0, 0, 0,))
+            self.paused = True
+        elif self.currentState == GameState.HowTo:
+            print('HowTo')
+            text = font.render("How To Play", True, (0, 0, 0))
+        elif self.currentState == GameState.Credits:
+            print('Credits')
+            text = font.render('Mellolikejello, Mackster, Red-Two', True, (0,0,0))
             
 
         while self.running:
@@ -65,7 +80,7 @@ class HFOSS:
                     elif event.key == pygame.K_RIGHT:
                         self.direction = 1
                     elif event.key == pygame.K_ESCAPE:
-                        pygame.event.post(Quit)
+                        return
 
             # Move the ball
             if not self.paused:
@@ -87,10 +102,6 @@ class HFOSS:
 
             # Draw the ball
             #pygame.draw.circle(screen, (255, 0, 0), (self.x, self.y), 100)
-# Select the font to use, size, bold, italics
-            font = pygame.font.SysFont('Calibri', 25, True, False)
-        # Render the text. "True" means anti-aliased text
-            text = font.render("AngleGators", True, (0, 0, 0))
 
             screen.blit(text, [250,250])
 
