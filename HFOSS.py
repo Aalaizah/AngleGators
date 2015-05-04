@@ -37,6 +37,12 @@ class HFOSS:
     def read_file(self, file_path):
         pass
 
+    def getNextScreen(e, curScreen):
+        if curScreen == GameState.Menu:
+            return GameState.Playing
+        elif curScreen == GameState.Playing:
+            return GameState.Menu
+
     # The main game loop.
     def run(self):
         self.running = True
@@ -44,30 +50,31 @@ class HFOSS:
         screen = pygame.display.get_surface()
         font = pygame.font.SysFont('Calibri', 25, True, False)
 
-        if self.currentState == GameState.Menu:
-            # TODO: game menu init here
-            print('menu screen')
-            text = font.render("AngleGators", True, (0, 0, 0))
-        elif self.currentState == GameState.Playing:
-            text = font.render("This will be the main game screen", True, (0, 0, 0))
-            print('playing')
-        elif self.currentState == GameState.Paused:
-            print('paused')
-            text = font.render("The game is paused", True, (0, 0, 0,))
-            self.paused = True
-        elif self.currentState == GameState.HowTo:
-            print('HowTo')
-            text = font.render("How To Play", True, (0, 0, 0))
-        elif self.currentState == GameState.Credits:
-            print('Credits')
-            text = font.render('Mellolikejello, Mackster, Red-Two', True, (0,0,0))
-            
-
         while self.running:
             # Pump GTK messages.
             while Gtk.events_pending():
                 Gtk.main_iteration()
 
+            if 1 in pygame.mouse.get_pressed():
+                print(pygame.mouse.get_pos())
+                self.currentState = self.getNextScreen(self.currentState)
+            if self.currentState == GameState.Menu:
+                # TODO: game menu init here
+                print('menu screen')
+                text = font.render("AngleGators", True, (0, 0, 0))
+            elif self.currentState == GameState.Playing:
+                text = font.render("This will be the main game screen", True, (0, 0, 0))
+                print('playing')
+            elif self.currentState == GameState.Paused:
+                print('paused')
+                text = font.render("The game is paused", True, (0, 0, 0,))
+                self.paused = True
+            elif self.currentState == GameState.HowTo:
+                print('HowTo')
+                text = font.render("How To Play", True, (0, 0, 0))
+            elif self.currentState == GameState.Credits:
+                print('Credits')
+                text = font.render('Mellolikejello, Mackster, Red-Two', True, (0,0,0))
             # Pump PyGame messages.
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
