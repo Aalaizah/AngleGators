@@ -2,6 +2,7 @@
 import pygame
 from gi.repository import Gtk
 from enum import Enum
+import sys
 
 # TODO: move to a separate file?
 class GameState(Enum):
@@ -10,6 +11,20 @@ class GameState(Enum):
 	Paused = 2
 	HowTo = 3
 	Credits = 4
+
+class Alligator(pygame.sprite.Sprite):
+    def __init__(self, currentImage):
+        super().__init__()
+        # Create an image
+        self.images = [pygame.image.load("Assets/gator0.png"), 
+            pygame.image.load("Assets/gator20.png"),
+            pygame.image.load("Assets/gator45.png"),
+            pygame.image.load("Assets/gator70.png"),
+            pygame.image.load("Assets/gator90.png")]
+        self.image = self.images[currentImage]
+        self.image.convert()
+        self.image.set_colorkey((255, 255, 255))
+        self.rect = self.image.get_rect()
 
 class HFOSS:
     def __init__(self):
@@ -47,19 +62,19 @@ class HFOSS:
     def alligator(self):
         if self.angle == 0:
             # image is mouth shut
-            print('First Image')
+            return 0
         elif self.angle > 0 and self.angle < 30:
             # image is mouth slightly open
-            print('Second Image')
+            return 1
         elif self.angle > 29 and self.angle < 60:
             # image is mouth halfway open
-            print('Third Image')
+            return 2
         elif self.angle > 59 and self.angle < 90:
             # Mouth is mostly open
-            print('Fourth Image')
+            return 3
         elif self.angle == 90:
             # Mouth is all the way open
-            print('Last Image')
+            return 4
 
 
 
@@ -68,7 +83,10 @@ class HFOSS:
         self.running = True
 
         screen = pygame.display.get_surface()
+        background = pygame.Surface([500, 500])
         font = pygame.font.SysFont('Calibri', 25, True, False)
+        background.fill((255, 108, 0))
+        gator = None
 
         while self.running:
             # Pump GTK messages.
@@ -84,7 +102,9 @@ class HFOSS:
                 text = font.render("AngleGators", True, (0, 0, 0))
             elif self.currentState == GameState.Playing:
                 text = font.render(str(self.angle), True, (0, 0, 0))
-                print(self.angle)
+                gator = Alligator(self.alligator())
+                gator.rect.x = 0
+                gator.rect.y = 0
             elif self.currentState == GameState.Paused:
                 print('paused')
                 text = font.render("The game is paused", True, (0, 0, 0,))
@@ -98,6 +118,9 @@ class HFOSS:
             # Pump PyGame messages.
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
+                    pygame.display.quit()
+                    pygame.quit()
+                    sys.exit()
                     return
                 elif event.type == pygame.VIDEORESIZE:
                     pygame.display.set_mode(event.size, pygame.RESIZABLE)
@@ -136,7 +159,10 @@ class HFOSS:
             # Draw the ball
             #pygame.draw.circle(screen, (255, 0, 0), (self.x, self.y), 100)
 
-            self.alligator()
+            #all_sprites_list.clear(background, [255, 108, 0])
+            #all_sprites_list.draw(screen)
+            if(gator != None):
+                screen.blit(gator.image, [0, 0])
             screen.blit(text, [250,250])
 
             # Flip Display
