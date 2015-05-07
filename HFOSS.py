@@ -24,7 +24,8 @@ class HFOSS:
 
         self.paused = False
         self.direction = 1
-        self.currentState = GameState.Menu
+        self.currentState = GameState.Playing
+        self.angle = 0
 
     def set_paused(self, paused):
         self.paused = paused
@@ -42,6 +43,7 @@ class HFOSS:
             return GameState.Playing
         elif curScreen == GameState.Playing:
             return GameState.Menu
+
 
     # The main game loop.
     def run(self):
@@ -63,8 +65,8 @@ class HFOSS:
                 print('menu screen')
                 text = font.render("AngleGators", True, (0, 0, 0))
             elif self.currentState == GameState.Playing:
-                text = font.render("This will be the main game screen", True, (0, 0, 0))
-                print('playing')
+                text = font.render(str(self.angle), True, (0, 0, 0))
+                print(self.angle)
             elif self.currentState == GameState.Paused:
                 print('paused')
                 text = font.render("The game is paused", True, (0, 0, 0,))
@@ -83,9 +85,15 @@ class HFOSS:
                     pygame.display.set_mode(event.size, pygame.RESIZABLE)
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_LEFT:
-                        self.direction = -1
+                        if self.angle < 90:
+                            self.angle += 1
+                        else:
+                            self.angle = 90
                     elif event.key == pygame.K_RIGHT:
-                        self.direction = 1
+                        if self.angle > 0:
+                            self.angle -= 1
+                        else:
+                            self.angle = 0
                     elif event.key == pygame.K_ESCAPE:
                         return
 
@@ -105,7 +113,7 @@ class HFOSS:
                 self.vy += 5
 
             # Clear Display
-            screen.fill((255, 255, 255))  # 255 for white
+            screen.fill((255, 108, 0))  # 255 for white
 
             # Draw the ball
             #pygame.draw.circle(screen, (255, 0, 0), (self.x, self.y), 100)
