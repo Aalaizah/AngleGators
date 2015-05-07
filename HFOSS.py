@@ -24,7 +24,7 @@ class HFOSS:
 
         self.paused = False
         self.direction = 1
-        self.currentState = GameState.Playing
+        self.currentState = GameState.Menu
         self.angle = 0
 
     def set_paused(self, paused):
@@ -43,6 +43,24 @@ class HFOSS:
             return GameState.Playing
         elif curScreen == GameState.Playing:
             return GameState.Menu
+
+    def alligator(self):
+        if self.angle == 0:
+            # image is mouth shut
+            print('First Image')
+        elif self.angle > 0 and self.angle < 30:
+            # image is mouth slightly open
+            print('Second Image')
+        elif self.angle > 29 and self.angle < 60:
+            # image is mouth halfway open
+            print('Third Image')
+        elif self.angle > 59 and self.angle < 90:
+            # Mouth is mostly open
+            print('Fourth Image')
+        elif self.angle == 90:
+            # Mouth is all the way open
+            print('Last Image')
+
 
 
     # The main game loop.
@@ -118,6 +136,7 @@ class HFOSS:
             # Draw the ball
             #pygame.draw.circle(screen, (255, 0, 0), (self.x, self.y), 100)
 
+            self.alligator()
             screen.blit(text, [250,250])
 
             # Flip Display
@@ -132,6 +151,7 @@ class HFOSS:
 def main():
     pygame.init()
     pygame.display.set_mode((0, 0), pygame.RESIZABLE)
+    pygame.display.set_caption('AngleGators')
     game = HFOSS()
     game.run()
 
