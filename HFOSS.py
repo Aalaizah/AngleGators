@@ -164,9 +164,7 @@ class HFOSS:
         self.running = True
 
         screen = pygame.display.get_surface()
-        background = pygame.Surface([500, 500])
-        font = pygame.font.SysFont('Calibri', 25, True, False)
-        background.fill((255, 108, 0))
+        font = pygame.font.SysFont(None, 25, True, False)
         gator = None
         text = None
 
@@ -193,8 +191,6 @@ class HFOSS:
             elif self.currentState == GameState.Playing:
                 text = font.render(str(self.angle), True, (0, 0, 0))
                 gator = Alligator(self.alligator())
-                gator.rect.x = 0
-                gator.rect.y = 0
             elif self.currentState == GameState.Paused:
                 print('paused')
                 text = font.render("The game is paused", True, (0, 0, 0,))
@@ -205,7 +201,7 @@ class HFOSS:
             elif self.currentState == GameState.Credits:
                 #print('Credits')
                 text_items = ('Programmers: Mellody Kelly, Alex Mack, William Russel', 
-                                'Artwork: Jackie Wiley', 'Back')
+                                'Artwork: Jackie Wiley', 'Special thanks to Back')
                 cm = GameMenu(screen, text_items)
                 if cm.run() == 'Back':
                     self.currentState = GameState.Menu
@@ -258,10 +254,9 @@ class HFOSS:
 
             #all_sprites_list.draw(screen)
             if(gator != None):
-                screen.blit(gator.image, [0, 0])
+                screen.blit(gator.image, [0, (screen.get_height() - gator.rect.height)])
             if(text != None):
-                screen.blit(text, [250,250])
-
+                screen.blit(text, [250,(screen.get_height() - gator.rect.height)])
             # Flip Display
             pygame.display.flip()
 
