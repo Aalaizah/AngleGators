@@ -201,7 +201,7 @@ class HFOSS:
             elif self.currentState == GameState.Credits:
                 #print('Credits')
                 text_items = ('Programmers: Mellody Kelly, Alex Mack, William Russel', 
-                                'Artwork: Jackie Wiley', 'Special thanks to Back')
+                                'Artwork: Jackie Wiley', 'Back')
                 cm = GameMenu(screen, text_items)
                 if cm.run() == 'Back':
                     self.currentState = GameState.Menu
