@@ -180,14 +180,14 @@ class HFOSS:
                 #self.currentState = self.getNextScreen(self.currentState)
             if self.currentState == GameState.Menu:
                 # TODO: game menu init here
-                menu_items = ('Start', 'Quit')
+                menu_items = ('Start', 'Credits', 'Quit')
                 gm = GameMenu(screen, menu_items)
                 if gm.run() == 'Start':
-                    self.currentState = self.getNextScreen(self.currentState)
+                    self.currentState = GameState.Playing
+                elif gm.run() == 'Credits':
+                    self.currentState = GameState.Credits
                 elif gm.run() == 'Quit':
-                    pygame.display.quit()
-                    pygame.quit()
-                    sys.exit()
+                    return
                 #print('menu screen')
                 #text = font.render("AngleGators", True, (0, 0, 0))
             elif self.currentState == GameState.Playing:
@@ -203,8 +203,13 @@ class HFOSS:
                 print('HowTo')
                 text = font.render("How To Play", True, (0, 0, 0))
             elif self.currentState == GameState.Credits:
-                print('Credits')
-                text = font.render('Mellolikejello, Mackster, Red-Two', True, (0,0,0))
+                #print('Credits')
+                text_items = ('Programmers: Mellody Kelly, Alex Mack, William Russel', 
+                                'Artwork: Jackie Wiley', 'Back')
+                cm = GameMenu(screen, text_items)
+                if cm.run() == 'Back':
+                    self.currentState = GameState.Menu
+                #text = font.render('Mellolikejello, Mackster, Red-Two', True, (0,0,0))
             # Pump PyGame messages.
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
