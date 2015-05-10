@@ -12,6 +12,88 @@ class GameState(Enum):
 	HowTo = 3
 	Credits = 4
 
+class FontItem(pygame.font.Font):
+    def __init__(self, text, font=None, font_size=30,
+                 font_color=(255, 255, 255), pos_x=0, pos_y=0):
+        pygame.font.Font.__init__(self, font, font_size)
+        self.text = text
+        self.font_size = font_size
+        self.font_color = font_color
+        self.label = self.render(self.text, 1, self.font_color)
+        self.width = self.label.get_rect().width
+        self.height = self.label.get_rect().height
+        self.pos_x = pos_x
+        self.pos_y = pos_y
+        self.position = pos_x, pos_y
+
+    def set_position(self, x, y):
+        self.position = (x, y)
+        self.pos_x = x
+        self.pos_y = y
+
+    def is_mouse_selection(self, posx_posy):
+        posx, posy = posx_posy
+        if (posx >= self.pos_x and posx <= self.pos_x + self.width) and \
+            (posy >= self.pos_y and posy <= self.pos_y + self.height):
+                return True
+        return False
+
+    def set_font_color(self, rgb_tuple):
+        self.font_color = rgb_tuple
+        self.label = self.render(self.text, 1, self.font_color)
+
+class GameMenu():
+    def __init__(self, screen, items, bg_color=(255, 108, 0), font=None,
+                    font_size=30, font_color=(0,0,0)):
+
+        self.screen = screen
+        self.scr_width = self.screen.get_rect().width
+        self.scr_height = self.screen.get_rect().height
+
+        self.bg_color = bg_color
+        self.clock = pygame.time.Clock()
+
+        self.items = items
+        self.font = pygame.font.SysFont(font, font_size)
+        self.font_color = font_color
+
+        self.items = []
+        for index, item in enumerate(items):
+            menu_item = FontItem(item)
+
+            #t_h: total height of text block
+            t_h = len(items) * menu_item.height
+            pos_x = (self.scr_width / 2) - (menu_item.width / 2)
+            pos_y = (self.scr_height / 2) - (t_h / 2) + ((index * 2) + index * menu_item.height)
+
+            menu_item.set_position(pos_x, pos_y)
+            self.items.append(menu_item)
+
+    def run(self):
+        mainloop = True
+        while mainloop:
+            # Limit frame speed to 50 fps
+            self.clock.tick(50)
+
+            for event in pygame.event.get():
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    mpos = pygame.mouse.get_pos()
+                    for item in self.items:
+                        if item.is_mouse_selection(mpos):
+                            return item.text
+
+            # Redraw the background
+            self.screen.fill(self.bg_color)
+
+            for item in self.items:
+                if item.is_mouse_selection(pygame.mouse.get_pos()):
+                    item.set_font_color((255, 255, 255))
+                else:
+                    item.set_font_color((0, 0, 0))
+                self.screen.blit(item.label, item.position)
+
+            pygame.display.flip()
+
 class Alligator(pygame.sprite.Sprite):
     def __init__(self, currentImage):
         super().__init__()
@@ -77,7 +159,6 @@ class HFOSS:
             return 4
 
 
-
     # The main game loop.
     def run(self):
         self.running = True
@@ -87,19 +168,28 @@ class HFOSS:
         font = pygame.font.SysFont('Calibri', 25, True, False)
         background.fill((255, 108, 0))
         gator = None
+        text = None
 
         while self.running:
             # Pump GTK messages.
             while Gtk.events_pending():
                 Gtk.main_iteration()
 
-            if 1 in pygame.mouse.get_pressed():
-                print(pygame.mouse.get_pos())
-                self.currentState = self.getNextScreen(self.currentState)
+            #if 1 in pygame.mouse.get_pressed():
+                #print(pygame.mouse.get_pos())
+                #self.currentState = self.getNextScreen(self.currentState)
             if self.currentState == GameState.Menu:
                 # TODO: game menu init here
-                print('menu screen')
-                text = font.render("AngleGators", True, (0, 0, 0))
+                menu_items = ('Start', 'Quit')
+                gm = GameMenu(screen, menu_items)
+                if gm.run() == 'Start':
+                    self.currentState = self.getNextScreen(self.currentState)
+                elif gm.run() == 'Quit':
+                    pygame.display.quit()
+                    pygame.quit()
+                    sys.exit()
+                #print('menu screen')
+                #text = font.render("AngleGators", True, (0, 0, 0))
             elif self.currentState == GameState.Playing:
                 text = font.render(str(self.angle), True, (0, 0, 0))
                 gator = Alligator(self.alligator())
@@ -160,10 +250,12 @@ class HFOSS:
             #pygame.draw.circle(screen, (255, 0, 0), (self.x, self.y), 100)
 
             #all_sprites_list.clear(background, [255, 108, 0])
+
             #all_sprites_list.draw(screen)
             if(gator != None):
                 screen.blit(gator.image, [0, 0])
-            screen.blit(text, [250,250])
+            if(text != None):
+                screen.blit(text, [250,250])
 
             # Flip Display
             pygame.display.flip()
