@@ -97,7 +97,7 @@ class GameMenu():
 
 class Alligator(pygame.sprite.Sprite):
     def __init__(self, currentImage):
-        super().__init__()
+        #super().__init__()
         # Create an image
         self.images = [pygame.image.load("Assets/gator0.png"), 
             pygame.image.load("Assets/gator20.png"),
