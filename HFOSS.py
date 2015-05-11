@@ -211,7 +211,7 @@ class HFOSS:
                 text = font.render("How To Play", True, (0, 0, 0))
             elif self.currentState == GameState.Credits:
                 #print('Credits')
-                text_items = ('Programmers: Mellody Kelly, Alex Mack, William Russel', 
+                text_items = ('Programmers: Melody Kelly, Alex Mack, William Russel', 
                                 'Artwork: Jackie Wiley', 'Back')
                 cm = GameMenu(screen, text_items, 'Credits')
                 response = cm.run()
