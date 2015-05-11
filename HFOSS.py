@@ -43,7 +43,7 @@ class FontItem(pygame.font.Font):
         self.label = self.render(self.text, 1, self.font_color)
 
 class GameMenu():
-    def __init__(self, screen, items, bg_color=(255, 108, 0), font=None,
+    def __init__(self, screen, items, title, bg_color=(255, 108, 0), font=None,
                     font_size=30, font_color=(0,0,0)):
 
         self.screen = screen
@@ -56,6 +56,8 @@ class GameMenu():
         self.items = items
         self.font = pygame.font.SysFont(font, font_size)
         self.font_color = font_color
+        self.title = FontItem(title).set_font_color((0, 0, 0))
+        #self.title_label = pygame.font.Font.render(self.title, 1, self.font_color)
 
         self.items = []
         for index, item in enumerate(items):
@@ -179,12 +181,13 @@ class HFOSS:
             if self.currentState == GameState.Menu:
                 # TODO: game menu init here
                 menu_items = ('Start', 'Credits', 'Quit')
-                gm = GameMenu(screen, menu_items)
-                if gm.run() == 'Start':
+                gm = GameMenu(screen, menu_items, 'AngleGators')
+                response = gm.run()
+                if response == 'Start':
                     self.currentState = GameState.Playing
-                elif gm.run() == 'Credits':
+                elif response == 'Credits':
                     self.currentState = GameState.Credits
-                elif gm.run() == 'Quit':
+                elif response == 'Quit':
                     return
                 #print('menu screen')
                 #text = font.render("AngleGators", True, (0, 0, 0))
@@ -193,7 +196,16 @@ class HFOSS:
                 gator = Alligator(self.alligator())
             elif self.currentState == GameState.Paused:
                 print('paused')
-                text = font.render("The game is paused", True, (0, 0, 0,))
+                text_items = ('Resume','Return to Main Menu', 'Quit')
+                ps = GameMenu(screen, text_items, 'Game is Paused')
+                response = ps.run()
+                if response == 'Resume':
+                    self.currentState = GameState.Playing
+                elif response == 'Return to Main Menu':
+                    self.currentState = GameState.Menu
+                elif response == 'Quit':
+                    return
+                #text = font.render("The game is paused", True, (0, 0, 0,))
                 self.paused = True
             elif self.currentState == GameState.HowTo:
                 print('HowTo')
@@ -202,8 +214,9 @@ class HFOSS:
                 #print('Credits')
                 text_items = ('Programmers: Mellody Kelly, Alex Mack, William Russel', 
                                 'Artwork: Jackie Wiley', 'Back')
-                cm = GameMenu(screen, text_items)
-                if cm.run() == 'Back':
+                cm = GameMenu(screen, text_items, 'Credits')
+                response = cm.run()
+                if response == 'Back':
                     self.currentState = GameState.Menu
                 #text = font.render('Mellolikejello, Mackster, Red-Two', True, (0,0,0))
             # Pump PyGame messages.
@@ -227,7 +240,7 @@ class HFOSS:
                         else:
                             self.angle = 0
                     elif event.key == pygame.K_ESCAPE:
-                        return
+                        self.currentState = GameState.Paused
 
             # Move the ball
             if not self.paused:
