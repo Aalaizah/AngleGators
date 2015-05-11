@@ -1,11 +1,10 @@
 #!/usr/bin/python
 import pygame
 from gi.repository import Gtk
-from enum import Enum
 import sys
 
 # TODO: move to a separate file?
-class GameState(Enum):
+class GameState():
 	Menu = 0
 	Playing = 1
 	Paused = 2
