@@ -179,11 +179,13 @@ class AngleGators:
                 #self.currentState = self.getNextScreen(self.currentState)
             if self.currentState == GameState.Menu:
                 # TODO: game menu init here
-                menu_items = ('Start', 'Credits', 'Quit')
+                menu_items = ('Start', 'How to Play','Credits', 'Quit')
                 gm = GameMenu(screen, menu_items, 'AngleGators')
                 response = gm.run()
                 if response == 'Start':
                     self.currentState = GameState.Playing
+                elif response == 'How to Play':
+                    self.currentState = GameState.HowTo
                 elif response == 'Credits':
                     self.currentState = GameState.Credits
                 elif response == 'Quit':
@@ -208,7 +210,13 @@ class AngleGators:
                 self.paused = True
             elif self.currentState == GameState.HowTo:
                 print('HowTo')
-                text = font.render("How To Play", True, (0, 0, 0))
+                text_items = ('Open the Alligators mouth to eat the object', 'Use the left arrow to open it\'s mouth more',
+                                'Use the right arrow to close it\'s mouth', 'Back')
+                ht = GameMenu(screen, text_items, 'How To Play')
+                response = ht.run()
+                if response == 'Back':
+                    self.currentState = GameState.Menu
+                #text = font.render("How To Play", True, (0, 0, 0))
             elif self.currentState == GameState.Credits:
                 #print('Credits')
                 text_items = ('Programmers: Melody Kelly, Alex Mack, William Russel', 
