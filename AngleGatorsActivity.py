@@ -13,17 +13,17 @@ from sugar3.activity.widgets import StopButton
 
 import sugargame.canvas
 
-import HFOSS
+import angle_gators
 
 
-class HFOSSActivity(sugar3.activity.activity.Activity):
+class AngleGatorsActivity(sugar3.activity.activity.Activity):
     def __init__(self, handle):
-        super(HFOSSActivity, self).__init__(handle)
+        super(AngleGatorsActivity, self).__init__(handle)
 
         self.paused = False
 
         # Create the game instance.
-        self.game = HFOSS.HFOSS()
+        self.game = angle_gators.AngleGators()
 
         # Build the activity toolbar.
         self.build_toolbar()

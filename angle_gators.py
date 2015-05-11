@@ -109,7 +109,7 @@ class Alligator(pygame.sprite.Sprite):
         self.image.set_colorkey((255, 255, 255))
         self.rect = self.image.get_rect()
 
-class HFOSS:
+class AngleGators:
     def __init__(self):
         # Set up a clock for managing the frame rate.
         self.clock = pygame.time.Clock()
@@ -282,7 +282,7 @@ def main():
     pygame.init()
     pygame.display.set_mode((0, 0), pygame.RESIZABLE)
     pygame.display.set_caption('AngleGators')
-    game = HFOSS()
+    game = AngleGators()
     game.run()
 
 if __name__ == '__main__':
