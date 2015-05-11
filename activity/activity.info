@@ -1,6 +1,6 @@
 [Activity]
 name = AngleGators
-bundle_id = edu.rit.HFOSS
-exec = sugar-activity HFOSSActivity.HFOSSActivity
+bundle_id = edu.rit.angle_gators
+exec = sugar-activity AngleGatorsActivity.AngleGatorsActivity
 icon = activity-generic
 activity_version = 1
