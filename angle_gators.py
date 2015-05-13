@@ -12,8 +12,8 @@ class GameState():
 	Credits = 4
 
 class FontItem(pygame.font.Font):
-    def __init__(self, text, font=None, font_size=30,
-                 font_color=(255, 255, 255), pos_x=0, pos_y=0):
+    def __init__(self, text, font_size=30, font=None,
+                 font_color=(0, 0, 0), pos_x=0, pos_y=0,):
         pygame.font.Font.__init__(self, font, font_size)
         self.text = text
         self.font_size = font_size
@@ -29,6 +29,7 @@ class FontItem(pygame.font.Font):
         self.position = (x, y)
         self.pos_x = x
         self.pos_y = y
+	self.label = self.render(self.text, 1, self.font_color)
 
     def is_mouse_selection(self, posx_posy):
         posx, posy = posx_posy
@@ -55,8 +56,14 @@ class GameMenu():
         self.items = items
         self.font = pygame.font.SysFont(font, font_size)
         self.font_color = font_color
-        self.title = FontItem(title).set_font_color((0, 0, 0))
-        #self.title_label = pygame.font.Font.render(self.title, 1, self.font_color)
+
+        self.title = FontItem(title, 60)
+
+	#self.title_label = pygame.font.Font.render(self.title, 1, self.font_color)
+	self.title_pos_x = (self.scr_width / 2) - (self.title.width / 2)
+	self.title_pos_y = (self.scr_width / 8) - (self.title.height / 2)
+	self.title.set_position(self.title_pos_x, self.title_pos_y)
+
 
         self.items = []
         for index, item in enumerate(items):
@@ -92,7 +99,8 @@ class GameMenu():
                 else:
                     item.set_font_color((0, 0, 0))
                 self.screen.blit(item.label, item.position)
-
+	    
+	    self.screen.blit(self.title.label, self.title.position)
             pygame.display.flip()
 
 class Alligator(pygame.sprite.Sprite):
@@ -195,8 +203,7 @@ class AngleGators:
             elif self.currentState == GameState.Playing:
                 text = font.render(str(self.angle), True, (0, 0, 0))
                 gator = Alligator(self.alligator())
-            elif self.currentState == GameState.Paused:
-                print('paused')
+            elif self.currentState == GameState.Paused:              
                 text_items = ('Resume','Return to Main Menu', 'Quit')
                 ps = GameMenu(screen, text_items, 'Game is Paused')
                 response = ps.run()
@@ -209,7 +216,7 @@ class AngleGators:
                 #text = font.render("The game is paused", True, (0, 0, 0,))
                 self.paused = True
             elif self.currentState == GameState.HowTo:
-                print('HowTo')
+               
                 text_items = ('Open the Alligators mouth to eat the object', 'Use the left arrow to open it\'s mouth more',
                                 'Use the right arrow to close it\'s mouth', 'Back')
                 ht = GameMenu(screen, text_items, 'How To Play')
