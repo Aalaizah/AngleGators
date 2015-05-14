@@ -86,6 +86,13 @@ class Alligator(pygame.sprite.Sprite):
         self.image.set_colorkey((255, 255, 255))
         self.rect = self.image.get_rect()
 
+class Conveyor(pygame.sprite.Sprite):
+    def __init__(self):
+        #load conveyor image
+        self.image = pygame.image.load("Assets/environment/conveyorbelt.png")
+        self.image.convert()
+        self.rect = self.image.get_rect()
+     
 class AngleGators:
     def __init__(self):
         # Set up a clock for managing the frame rate.
@@ -132,6 +139,7 @@ class AngleGators:
         font = pygame.font.SysFont(None, 25, True, False)
         gator = None
         text = None
+        conveyor = None
         foods = []
 
         while self.running:
@@ -158,6 +166,7 @@ class AngleGators:
             elif self.currentState == GameState.Playing:
                 text = font.render(str(self.angle), True, (0, 0, 0))
                 gator = Alligator(self.alligator())
+                conveyor = Conveyor()
                 foods = []
                 for i in range(0, 13):
                     newFood = Food(i)
@@ -186,7 +195,7 @@ class AngleGators:
                 #text = font.render("How To Play", True, (0, 0, 0))
             elif self.currentState == GameState.Credits:
                 #print('Credits')
-                text_items = (FontItem('Programmers: Melody Kelly, Alex Mack, William Russel'),
+                text_items = (FontItem('Programmers: Melody Kelly, Alex Mack, William Russell'),
                               FontItem('Artwork: Jackie Wiley'),
                               FontButton('Back'))
                 cm = GameMenu(screen, text_items, 'Credits')
@@ -230,6 +239,8 @@ class AngleGators:
                 screen.blit(gator.image, [0, (screen.get_height() - gator.rect.height)])
             if(text != None):
                 screen.blit(text, [250,(screen.get_height() - gator.rect.height)])
+            if(conveyor != None):
+                screen.blit(conveyor.image, [(screen.get_width() - gator.rect.width - 100), screen.get_height() - (gator.rect.height/1.8)])
             if(len(foods) != 0):
                 foodCount = 10
                 for food in foods:
