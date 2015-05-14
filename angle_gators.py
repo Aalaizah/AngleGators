@@ -117,6 +117,29 @@ class Alligator(pygame.sprite.Sprite):
         self.image.set_colorkey((255, 255, 255))
         self.rect = self.image.get_rect()
 
+class Food(pygame.sprite.Sprite):
+    def __init__(self, index):
+        # Create an image
+        self.images = [pygame.image.load("Assets/foods/acorn.png"),
+            pygame.image.load("Assets/foods/apple.png"),
+            pygame.image.load("Assets/foods/appleslice.png"),
+            pygame.image.load("Assets/foods/grapes.png"),
+            pygame.image.load("Assets/foods/lemon.png"),
+            pygame.image.load("Assets/foods/onion.png"),
+            pygame.image.load("Assets/foods/orange.png"),
+            pygame.image.load("Assets/foods/orangeslice.png"),
+            pygame.image.load("Assets/foods/peach.png"),
+            pygame.image.load("Assets/foods/strawberry.png"),
+            pygame.image.load("Assets/foods/tomato.png"),
+            pygame.image.load("Assets/foods/watermelon.png"),
+            pygame.image.load("Assets/foods/yam.png"),
+            pygame.image.load("Assets/foods/zucchini.png")]
+        self.image = self.images[index]
+        self.min_angle = 10
+        self.image.convert()
+        self.image.set_colorkey((255, 255, 255))
+        self.rect = self.image.get_rect()
+
 class AngleGators:
     def __init__(self):
         # Set up a clock for managing the frame rate.
@@ -176,6 +199,7 @@ class AngleGators:
         font = pygame.font.SysFont(None, 25, True, False)
         gator = None
         text = None
+        foods = []
 
         while self.running:
             # Pump GTK messages.
@@ -203,6 +227,10 @@ class AngleGators:
             elif self.currentState == GameState.Playing:
                 text = font.render(str(self.angle), True, (0, 0, 0))
                 gator = Alligator(self.alligator())
+                foods = []
+                for i in range(0, 13):
+                    newFood = Food(i)
+                    foods.append(newFood)
             elif self.currentState == GameState.Paused:              
                 text_items = ('Resume','Return to Main Menu', 'Quit')
                 ps = GameMenu(screen, text_items, 'Game is Paused')
@@ -284,6 +312,11 @@ class AngleGators:
                 screen.blit(gator.image, [0, (screen.get_height() - gator.rect.height)])
             if(text != None):
                 screen.blit(text, [250,(screen.get_height() - gator.rect.height)])
+            if(len(foods) != 0):
+                foodCount = 10
+                for food in foods:
+                    screen.blit(food.image, [300, foodCount])
+                    foodCount += 50
             # Flip Display
             pygame.display.flip()
 
