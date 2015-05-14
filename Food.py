@@ -1,6 +1,7 @@
 import pygame
 
 class Food(pygame.sprite.Sprite):
+    """Food element for game"""
     def __init__(self, index):
         # Create an image
         self.images = [pygame.image.load("Assets/foods/acorn.png"),
@@ -24,8 +25,10 @@ class Food(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
 
     def set_min_angle(self, angle):
+        """Set the minimum angle required to eat this Food"""
         self.min_angle = angle;
 
     def set_position(self, x, y):
+        """Set the position of this Food"""
         self.pos_x = x
         self.pos_y = y
