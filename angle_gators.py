@@ -145,14 +145,7 @@ class AngleGators:
         # Set up a clock for managing the frame rate.
         self.clock = pygame.time.Clock()
 
-        self.x = -100
-        self.y = 100
-
-        self.vx = 10
-        self.vy = 0
-
         self.paused = False
-        self.direction = 1
         self.currentState = GameState.Menu
         self.angle = 0
 
@@ -166,12 +159,6 @@ class AngleGators:
     # Called to load the state of the game from the Journal.
     def read_file(self, file_path):
         pass
-
-    def getNextScreen(e, curScreen):
-        if curScreen == GameState.Menu:
-            return GameState.Playing
-        elif curScreen == GameState.Playing:
-            return GameState.Menu
 
     def alligator(self):
         if self.angle == 0:
@@ -206,9 +193,6 @@ class AngleGators:
             while Gtk.events_pending():
                 Gtk.main_iteration()
 
-            #if 1 in pygame.mouse.get_pressed():
-                #print(pygame.mouse.get_pos())
-                #self.currentState = self.getNextScreen(self.currentState)
             if self.currentState == GameState.Menu:
                 # TODO: game menu init here
                 menu_items = ('Start', 'How to Play','Credits', 'Quit')
@@ -283,21 +267,6 @@ class AngleGators:
                             self.angle = 0
                     elif event.key == pygame.K_ESCAPE:
                         self.currentState = GameState.Paused
-
-            # Move the ball
-            if not self.paused:
-                self.x += self.vx * self.direction
-                if self.direction == 1 and self.x > screen.get_width() + 100:
-                    self.x = -100
-                elif self.direction == -1 and self.x < -100:
-                    self.x = screen.get_width() + 100
-
-                self.y += self.vy
-                if self.y > screen.get_height() - 100:
-                    self.y = screen.get_height() - 100
-                    self.vy = -self.vy
-
-                self.vy += 5
 
             # Clear Display
             screen.fill((255, 108, 0))  # 255 for white
