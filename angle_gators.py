@@ -3,7 +3,8 @@ import pygame
 from gi.repository import Gtk
 import sys
 
-# TODO: move to a separate file?
+from Food import Food
+
 class GameState():
 	Menu = 0
 	Playing = 1
@@ -113,29 +114,6 @@ class Alligator(pygame.sprite.Sprite):
             pygame.image.load("Assets/gator70.png"),
             pygame.image.load("Assets/gator90.png")]
         self.image = self.images[currentImage]
-        self.image.convert()
-        self.image.set_colorkey((255, 255, 255))
-        self.rect = self.image.get_rect()
-
-class Food(pygame.sprite.Sprite):
-    def __init__(self, index):
-        # Create an image
-        self.images = [pygame.image.load("Assets/foods/acorn.png"),
-            pygame.image.load("Assets/foods/apple.png"),
-            pygame.image.load("Assets/foods/appleslice.png"),
-            pygame.image.load("Assets/foods/grapes.png"),
-            pygame.image.load("Assets/foods/lemon.png"),
-            pygame.image.load("Assets/foods/onion.png"),
-            pygame.image.load("Assets/foods/orange.png"),
-            pygame.image.load("Assets/foods/orangeslice.png"),
-            pygame.image.load("Assets/foods/peach.png"),
-            pygame.image.load("Assets/foods/strawberry.png"),
-            pygame.image.load("Assets/foods/tomato.png"),
-            pygame.image.load("Assets/foods/watermelon.png"),
-            pygame.image.load("Assets/foods/yam.png"),
-            pygame.image.load("Assets/foods/zucchini.png")]
-        self.image = self.images[index]
-        self.min_angle = 10
         self.image.convert()
         self.image.set_colorkey((255, 255, 255))
         self.rect = self.image.get_rect()
