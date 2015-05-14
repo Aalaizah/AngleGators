@@ -42,7 +42,8 @@ class AngleGators:
 
         self.paused = False
         self.currentState = GameState.Menu
-        self.angle = 0
+        self.angle = 0 
+        self.angles = [0, 10, 20, 25, 50, 70, 75, 80, 90]
 
     def set_paused(self, paused):
         self.paused = paused
@@ -71,8 +72,11 @@ class AngleGators:
         elif self.angle == 90:
             # Mouth is all the way open
             return 4
-
-
+    def change_angle(self, direction):
+        if direction == "up":
+            print(Angles[1])
+        elif direction == "down":
+            print("hi")
     # The main game loop.
     def run(self):
         self.running = True
@@ -152,12 +156,12 @@ class AngleGators:
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_LEFT:
                         if self.angle < 90:
-                            self.angle += 1
+                         self.angle = self.angles[self.angles.index(self.angle) + 1]
                         else:
                             self.angle = 90
                     elif event.key == pygame.K_RIGHT:
                         if self.angle > 0:
-                            self.angle -= 1
+                            self.angle = self.angles[self.angles.index(self.angle) - 1]
                         else:
                             self.angle = 0
                     elif event.key == pygame.K_ESCAPE:
@@ -177,7 +181,6 @@ class AngleGators:
                 screen.blit(text, [250,(screen.get_height() - gator.rect.height)])
             if(conveyor != None):
                 screen.blit(conveyor.image, [(screen.get_width() - gator.rect.width - 100), screen.get_height() - (gator.rect.height/1.8)])
-            if(len(foods) != 0):
                 foodCount = 10
                 for food in foods:
                     screen.blit(food.image, [300, foodCount])
