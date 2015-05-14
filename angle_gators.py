@@ -71,7 +71,7 @@ class GameMenu():
 	    
 	    self.screen.blit(self.title.label, self.title.position)
             pygame.display.flip()
-# TODO: move to a separate file?
+
 class Alligator(pygame.sprite.Sprite):
     def __init__(self, currentImage):
         #super().__init__()
@@ -92,7 +92,7 @@ class Conveyor(pygame.sprite.Sprite):
         self.image = pygame.image.load("Assets/environment/conveyorbelt.png")
         self.image.convert()
         self.rect = self.image.get_rect()
-     
+
 class AngleGators:
     def __init__(self):
         # Set up a clock for managing the frame rate.
@@ -148,7 +148,6 @@ class AngleGators:
                 Gtk.main_iteration()
 
             if self.currentState == GameState.Menu:
-                # TODO: game menu init here
                 menu_items = (FontButton('Start'), FontButton('How to Play'),
                               FontButton('Credits'), FontButton('Quit'))
                 gm = GameMenu(screen, menu_items, 'AngleGators')
@@ -162,7 +161,6 @@ class AngleGators:
                 elif response == 'Quit':
                     return
                 #print('menu screen')
-                #text = font.render("AngleGators", True, (0, 0, 0))
             elif self.currentState == GameState.Playing:
                 text = font.render(str(self.angle), True, (0, 0, 0))
                 gator = Alligator(self.alligator())
@@ -171,7 +169,7 @@ class AngleGators:
                 for i in range(0, 13):
                     newFood = Food(i)
                     foods.append(newFood)
-            elif self.currentState == GameState.Paused:              
+            elif self.currentState == GameState.Paused:
                 text_items = (FontButton('Resume'),FontButton('Return to Main Menu'), FontButton('Quit'))
                 ps = GameMenu(screen, text_items, 'Game is Paused')
                 response = ps.run()
@@ -181,18 +179,16 @@ class AngleGators:
                     self.currentState = GameState.Menu
                 elif response == 'Quit':
                     return
-                #text = font.render("The game is paused", True, (0, 0, 0,))
                 self.paused = True
             elif self.currentState == GameState.HowTo:
-                text_items = (FontItem('Open the Alligators mouth to eat the object'), 
+                text_items = (FontItem('Open the Alligators mouth to eat the object'),
                               FontItem('Use the left arrow to open it\'s mouth more'),
-                              FontItem('Use the right arrow to close it\'s mouth'), 
+                              FontItem('Use the right arrow to close it\'s mouth'),
                               FontButton('Back'))
                 ht = GameMenu(screen, text_items, 'How To Play')
                 response = ht.run()
                 if response == 'Back':
                     self.currentState = GameState.Menu
-                #text = font.render("How To Play", True, (0, 0, 0))
             elif self.currentState == GameState.Credits:
                 #print('Credits')
                 text_items = (FontItem('Programmers: Melody Kelly, Alex Mack, William Russell'),
@@ -202,7 +198,6 @@ class AngleGators:
                 response = cm.run()
                 if response == 'Back':
                     self.currentState = GameState.Menu
-                #text = font.render('Mellolikejello, Mackster, Red-Two', True, (0,0,0))
             # Pump PyGame messages.
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
