@@ -4,6 +4,7 @@ from gi.repository import Gtk
 import sys
 
 from Food import Food
+from FontItem import FontItem, FontButton
 
 class GameState():
 	Menu = 0
@@ -12,38 +13,8 @@ class GameState():
 	HowTo = 3
 	Credits = 4
 
-class FontItem(pygame.font.Font):
-    def __init__(self, text, font_size=30, font=None,
-                 font_color=(0, 0, 0), pos_x=0, pos_y=0,):
-        pygame.font.Font.__init__(self, font, font_size)
-        self.text = text
-        self.font_size = font_size
-        self.font_color = font_color
-        self.label = self.render(self.text, 1, self.font_color)
-        self.width = self.label.get_rect().width
-        self.height = self.label.get_rect().height
-        self.pos_x = pos_x
-        self.pos_y = pos_y
-        self.position = pos_x, pos_y
-
-    def set_position(self, x, y):
-        self.position = (x, y)
-        self.pos_x = x
-        self.pos_y = y
-	self.label = self.render(self.text, 1, self.font_color)
-
-    def is_mouse_selection(self, posx_posy):
-        posx, posy = posx_posy
-        if (posx >= self.pos_x and posx <= self.pos_x + self.width) and \
-            (posy >= self.pos_y and posy <= self.pos_y + self.height):
-                return True
-        return False
-
-    def set_font_color(self, rgb_tuple):
-        self.font_color = rgb_tuple
-        self.label = self.render(self.text, 1, self.font_color)
-
 class GameMenu():
+    #                           items is a list of FontItem
     def __init__(self, screen, items, title, bg_color=(255, 108, 0), font=None,
                     font_size=30, font_color=(0,0,0)):
 
@@ -65,18 +36,15 @@ class GameMenu():
 	self.title_pos_y = (self.scr_width / 8) - (self.title.height / 2)
 	self.title.set_position(self.title_pos_x, self.title_pos_y)
 
-
-        self.items = []
         for index, item in enumerate(items):
-            menu_item = FontItem(item)
-
             #t_h: total height of text block
-            t_h = len(items) * menu_item.height
-            pos_x = (self.scr_width / 2) - (menu_item.width / 2)
-            pos_y = (self.scr_height / 2) - (t_h / 2) + ((index * 2) + index * menu_item.height)
+            t_h = len(items) * item.height
+            pos_x = (self.scr_width / 2) - (item.width / 2)
+            pos_y = (self.scr_height / 2) - (t_h / 2) + ((index * 2) + index * item.height)
 
-            menu_item.set_position(pos_x, pos_y)
-            self.items.append(menu_item)
+            item.set_position(pos_x, pos_y)
+
+        self.items = items
 
     def run(self):
         mainloop = True
@@ -88,14 +56,14 @@ class GameMenu():
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     mpos = pygame.mouse.get_pos()
                     for item in self.items:
-                        if item.is_mouse_selection(mpos):
+                        if isinstance(item, FontButton) and item.is_mouse_selection(mpos):
                             return item.text
 
             # Redraw the background
             self.screen.fill(self.bg_color)
 
             for item in self.items:
-                if item.is_mouse_selection(pygame.mouse.get_pos()):
+                if isinstance(item, FontButton) and item.is_mouse_selection(pygame.mouse.get_pos()):
                     item.set_font_color((255, 255, 255))
                 else:
                     item.set_font_color((0, 0, 0))
@@ -103,7 +71,7 @@ class GameMenu():
 	    
 	    self.screen.blit(self.title.label, self.title.position)
             pygame.display.flip()
-
+# TODO: move to a separate file?
 class Alligator(pygame.sprite.Sprite):
     def __init__(self, currentImage):
         #super().__init__()
@@ -173,7 +141,8 @@ class AngleGators:
 
             if self.currentState == GameState.Menu:
                 # TODO: game menu init here
-                menu_items = ('Start', 'How to Play','Credits', 'Quit')
+                menu_items = (FontButton('Start'), FontButton('How to Play'),
+                              FontButton('Credits'), FontButton('Quit'))
                 gm = GameMenu(screen, menu_items, 'AngleGators')
                 response = gm.run()
                 if response == 'Start':
@@ -194,7 +163,7 @@ class AngleGators:
                     newFood = Food(i)
                     foods.append(newFood)
             elif self.currentState == GameState.Paused:              
-                text_items = ('Resume','Return to Main Menu', 'Quit')
+                text_items = (FontButton('Resume'),FontButton('Return to Main Menu'), FontButton('Quit'))
                 ps = GameMenu(screen, text_items, 'Game is Paused')
                 response = ps.run()
                 if response == 'Resume':
@@ -206,9 +175,10 @@ class AngleGators:
                 #text = font.render("The game is paused", True, (0, 0, 0,))
                 self.paused = True
             elif self.currentState == GameState.HowTo:
-               
-                text_items = ('Open the Alligators mouth to eat the object', 'Use the left arrow to open it\'s mouth more',
-                                'Use the right arrow to close it\'s mouth', 'Back')
+                text_items = (FontItem('Open the Alligators mouth to eat the object'), 
+                              FontItem('Use the left arrow to open it\'s mouth more'),
+                              FontItem('Use the right arrow to close it\'s mouth'), 
+                              FontButton('Back'))
                 ht = GameMenu(screen, text_items, 'How To Play')
                 response = ht.run()
                 if response == 'Back':
@@ -216,8 +186,9 @@ class AngleGators:
                 #text = font.render("How To Play", True, (0, 0, 0))
             elif self.currentState == GameState.Credits:
                 #print('Credits')
-                text_items = ('Programmers: Melody Kelly, Alex Mack, William Russel', 
-                                'Artwork: Jackie Wiley', 'Back')
+                text_items = (FontItem('Programmers: Melody Kelly, Alex Mack, William Russel'),
+                              FontItem('Artwork: Jackie Wiley'),
+                              FontButton('Back'))
                 cm = GameMenu(screen, text_items, 'Credits')
                 response = cm.run()
                 if response == 'Back':
