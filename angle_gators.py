@@ -164,10 +164,9 @@ class AngleGators:
                         self.currentState = GameState.Paused
 
             # Clear Display
-            screen.fill((255, 108, 0))  # 255 for white
-
-            # Draw the ball
-            #pygame.draw.circle(screen, (255, 0, 0), (self.x, self.y), 100)
+            #screen.fill((255, 108, 0))  # 255 for white
+            background = pygame.image.load("Assets/mainbackground.png")
+            screen.blit(background, [0, 0])
 
             #all_sprites_list.clear(background, [255, 108, 0])
 
@@ -191,10 +190,12 @@ class AngleGators:
 
 
 # This function is called when the game is run directly from the command line:
-# ./TestGame.py
+# ./angle_gators.py
 def main():
     pygame.init()
-    pygame.display.set_mode((0, 0), pygame.RESIZABLE)
+    screen_width = 800
+    screen_height = 600
+    pygame.display.set_mode([screen_width, screen_height])
     pygame.display.set_caption('AngleGators')
     game = AngleGators()
     game.run()
