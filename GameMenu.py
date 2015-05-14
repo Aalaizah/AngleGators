@@ -49,7 +49,9 @@ class GameMenu():
                             return item.text
 
             # Redraw the background
-            self.screen.fill(self.bg_color)
+#            self.screen.fill(self.bg_color)
+            background = pygame.image.load("Assets/mainbackground.png")
+            self.screen.blit(background, [0, 0])
 
             for item in self.items:
                 if isinstance(item, FontButton) and item.is_mouse_selection(pygame.mouse.get_pos()):
