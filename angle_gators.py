@@ -108,7 +108,7 @@ class AngleGators:
                     return
                 #print('menu screen')
             elif self.currentState == GameState.Playing:
-                text = font.render(str(self.angle), True, (0, 0, 0))
+                text = font.render(str(self.angle), True, (33, 69, 30))
                 gator = Alligator(self.alligator())
                 conveyor = Conveyor()
                 foods = []

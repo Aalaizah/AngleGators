@@ -4,14 +4,14 @@ from FontItem import FontItem, FontButton
 
 class GameMenu():
     #                           items is a list of FontItem
-    def __init__(self, screen, items, title, bg_color=(255, 108, 0), font=None,
-                    font_size=30, font_color=(0,0,0)):
+    def __init__(self, screen, items, title, bg_image="Assets/mainbackground.png", font=None,
+                    font_size=30, font_color=(33, 69, 30)):
 
         self.screen = screen
         self.scr_width = self.screen.get_rect().width
         self.scr_height = self.screen.get_rect().height
 
-        self.bg_color = bg_color
+        self.bg_image = pygame.image.load(bg_image)
         self.clock = pygame.time.Clock()
 
         self.items = items
@@ -35,6 +35,20 @@ class GameMenu():
 
         self.items = items
 
+    def draw(self):
+        # Redraw the background
+        self.screen.blit(self.bg_image, [0, 0])
+
+        for item in self.items:
+            if isinstance(item, FontButton) and item.is_mouse_selection(pygame.mouse.get_pos()):
+                item.set_font_color((255, 255, 255))
+            else:
+                item.set_font_color((33, 69, 30))
+            self.screen.blit(item.label, item.position)
+
+	    self.screen.blit(self.title.label, self.title.position)
+        pygame.display.flip()
+
     def run(self):
         mainloop = True
         while mainloop:
@@ -48,17 +62,4 @@ class GameMenu():
                         if isinstance(item, FontButton) and item.is_mouse_selection(mpos):
                             return item.text
 
-            # Redraw the background
-#            self.screen.fill(self.bg_color)
-            background = pygame.image.load("Assets/mainbackground.png")
-            self.screen.blit(background, [0, 0])
-
-            for item in self.items:
-                if isinstance(item, FontButton) and item.is_mouse_selection(pygame.mouse.get_pos()):
-                    item.set_font_color((255, 255, 255))
-                else:
-                    item.set_font_color((0, 0, 0))
-                self.screen.blit(item.label, item.position)
-	    
-	    self.screen.blit(self.title.label, self.title.position)
-            pygame.display.flip()
+            self.draw()

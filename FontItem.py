@@ -3,7 +3,7 @@ import pygame
 class FontItem(pygame.font.Font):
     """Displayable Text Item"""
     def __init__(self, text, font_size=30, font=None,
-                 font_color=(0, 0, 0), pos_x=0, pos_y=0,):
+                 font_color=(33, 69, 30), pos_x=0, pos_y=0,):
         """Initialize FontItem
 
         Keyword arguments:
@@ -40,7 +40,7 @@ class FontItem(pygame.font.Font):
 class FontButton(FontItem):
     """Extends FontItem, adds mouse check for interaction"""
     def __init__(self, text, font_size=30, font=None,
-                 font_color=(0, 0, 0), pos_x=0, pos_y=0):
+                 font_color=(33, 69, 30), pos_x=0, pos_y=0):
         super(FontButton, self).__init__(text, font_size, font, font_color,
                         pos_x, pos_y)
     def is_mouse_selection(self, posx_posy):
