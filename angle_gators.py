@@ -3,7 +3,8 @@ import pygame
 from gi.repository import Gtk
 import sys
 
-# TODO: move to a separate file?
+from Food import Food
+
 class GameState():
 	Menu = 0
 	Playing = 1
@@ -129,14 +130,7 @@ class AngleGators:
         # Set up a clock for managing the frame rate.
         self.clock = pygame.time.Clock()
 
-        self.x = -100
-        self.y = 100
-
-        self.vx = 10
-        self.vy = 0
-
         self.paused = False
-        self.direction = 1
         self.currentState = GameState.Menu
         self.angle = 0
 
@@ -150,12 +144,6 @@ class AngleGators:
     # Called to load the state of the game from the Journal.
     def read_file(self, file_path):
         pass
-
-    def getNextScreen(e, curScreen):
-        if curScreen == GameState.Menu:
-            return GameState.Playing
-        elif curScreen == GameState.Playing:
-            return GameState.Menu
 
     def alligator(self):
         if self.angle == 0:
@@ -183,16 +171,17 @@ class AngleGators:
         font = pygame.font.SysFont(None, 25, True, False)
         gator = None
         text = None
+<<<<<<< HEAD
         conveyor = None
+=======
+        foods = []
+>>>>>>> 91c42bd37d06f0c90442b95e1c70eca73de0e3e0
 
         while self.running:
             # Pump GTK messages.
             while Gtk.events_pending():
                 Gtk.main_iteration()
 
-            #if 1 in pygame.mouse.get_pressed():
-                #print(pygame.mouse.get_pos())
-                #self.currentState = self.getNextScreen(self.currentState)
             if self.currentState == GameState.Menu:
                 # TODO: game menu init here
                 menu_items = ('Start', 'How to Play','Credits', 'Quit')
@@ -211,7 +200,14 @@ class AngleGators:
             elif self.currentState == GameState.Playing:
                 text = font.render(str(self.angle), True, (0, 0, 0))
                 gator = Alligator(self.alligator())
+<<<<<<< HEAD
                 conveyor = Conveyor()
+=======
+                foods = []
+                for i in range(0, 13):
+                    newFood = Food(i)
+                    foods.append(newFood)
+>>>>>>> 91c42bd37d06f0c90442b95e1c70eca73de0e3e0
             elif self.currentState == GameState.Paused:              
                 text_items = ('Resume','Return to Main Menu', 'Quit')
                 ps = GameMenu(screen, text_items, 'Game is Paused')
@@ -265,21 +261,6 @@ class AngleGators:
                     elif event.key == pygame.K_ESCAPE:
                         self.currentState = GameState.Paused
 
-            # Move the ball
-            if not self.paused:
-                self.x += self.vx * self.direction
-                if self.direction == 1 and self.x > screen.get_width() + 100:
-                    self.x = -100
-                elif self.direction == -1 and self.x < -100:
-                    self.x = screen.get_width() + 100
-
-                self.y += self.vy
-                if self.y > screen.get_height() - 100:
-                    self.y = screen.get_height() - 100
-                    self.vy = -self.vy
-
-                self.vy += 5
-
             # Clear Display
             screen.fill((255, 108, 0))  # 255 for white
 
@@ -293,8 +274,16 @@ class AngleGators:
                 screen.blit(gator.image, [0, (screen.get_height() - gator.rect.height)])
             if(text != None):
                 screen.blit(text, [250,(screen.get_height() - gator.rect.height)])
+<<<<<<< HEAD
             if(conveyor != None):
                 screen.blit(conveyor.image, [(screen.get_width() - gator.rect.width - 100), screen.get_height() - (gator.rect.height/1.8)])
+=======
+            if(len(foods) != 0):
+                foodCount = 10
+                for food in foods:
+                    screen.blit(food.image, [300, foodCount])
+                    foodCount += 50
+>>>>>>> 91c42bd37d06f0c90442b95e1c70eca73de0e3e0
             # Flip Display
             pygame.display.flip()
 
