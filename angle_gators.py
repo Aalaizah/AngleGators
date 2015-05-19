@@ -196,9 +196,13 @@ class AngleGators:
 # ./angle_gators.py
 def main():
     pygame.init()
-    screen_width = 800
-    screen_height = 600
-    pygame.display.set_mode([screen_width, screen_height])
+    screen_width = pygame.display.Info().current_w
+    screen_height = pygame.display.Info().current_h
+    if(float(screen_width)/float(screen_height) == float(4)/float(3)):
+        screenSize = (screen_width,screen_height)
+    else:
+        screenSize = (800,600)
+    pygame.display.set_mode(screenSize)
     pygame.display.set_caption('AngleGators')
     game = AngleGators()
     game.run()
