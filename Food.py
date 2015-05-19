@@ -48,8 +48,10 @@ class FoodManager():
                    ]
         self.num_foods = len(self.food_list)
         self.active = []
+        self.isStarted = False
 
     def generate_food(self):
+        self.isStarted = True
         index = int(math.floor(random.random() * self.num_foods))
         selected_food = self.food_list[index]
         new_food = Food(selected_food["name"], selected_food["img"],
@@ -66,6 +68,10 @@ class FoodManager():
                 self.active.pop(0)
                 self.generate_food()
 
+    def reset(self):
+        self.active = []
+        self.isStarted = False
+
 class Food(pygame.sprite.Sprite):
     """Food element for game"""
     def __init__(self, name, img, min_angle):
@@ -75,8 +81,8 @@ class Food(pygame.sprite.Sprite):
         self.image.convert()
         self.image.set_colorkey((255, 255, 255))
         self.rect = self.image.get_rect()
-        self.pos_x = 800
-        self.pos_y = 300
+        self.pos_x = 1200
+        self.pos_y = 550
         self.speed = -10
 
     def set_min_angle(self, angle):

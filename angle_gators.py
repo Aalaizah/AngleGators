@@ -87,7 +87,9 @@ class AngleGators:
         text = None
         conveyor = None
         food_manager = FoodManager()
-        food_manager.generate_food()
+        background_imgs = { "main": pygame.image.load("Assets/mainbackground.png"),
+                            "play": pygame.image.load("Assets/playbackground.png")}
+        cur_background = background_imgs["main"]
 
         while self.running:
             # Pump GTK messages.
@@ -98,6 +100,7 @@ class AngleGators:
                 menu_items = (FontButton('Start'), FontButton('How to Play'),
                               FontButton('Credits'), FontButton('Quit'))
                 gm = GameMenu(screen, menu_items, 'AngleGators')
+                cur_background = background_imgs["main"]
                 response = gm.run()
                 if response == 'Start':
                     self.currentState = GameState.Playing
@@ -109,17 +112,24 @@ class AngleGators:
                     return
                 #print('menu screen')
             elif self.currentState == GameState.Playing:
+                cur_background = background_imgs["play"]
                 text = font.render(str(self.angle), True, (33, 69, 30))
                 gator = Alligator(self.alligator())
                 conveyor = Conveyor()
+                if(not food_manager.isStarted):
+                    food_manager.generate_food()
             elif self.currentState == GameState.Paused:
                 text_items = (FontButton('Resume'),FontButton('Return to Main Menu'), FontButton('Quit'))
                 ps = GameMenu(screen, text_items, 'Game is Paused')
+#                cur_background = background_imgs["play"]
                 response = ps.run()
                 if response == 'Resume':
                     self.currentState = GameState.Playing
                 elif response == 'Return to Main Menu':
                     self.currentState = GameState.Menu
+#                    gator = None
+#                    conveyor = None
+                    food_manager.reset()
                 elif response == 'Quit':
                     return
                 self.paused = True
@@ -129,6 +139,7 @@ class AngleGators:
                               FontItem('Use the right arrow to close it\'s mouth'),
                               FontButton('Back'))
                 ht = GameMenu(screen, text_items, 'How To Play')
+                cur_background = background_imgs["main"]
                 response = ht.run()
                 if response == 'Back':
                     self.currentState = GameState.Menu
@@ -138,6 +149,7 @@ class AngleGators:
                               FontItem('Artwork: Jackie Wiley'),
                               FontButton('Back'))
                 cm = GameMenu(screen, text_items, 'Credits')
+                cur_background = background_imgs["main"]
                 response = cm.run()
                 if response == 'Back':
                     self.currentState = GameState.Menu
@@ -165,23 +177,18 @@ class AngleGators:
                         self.currentState = GameState.Paused
 
             # Clear Display
-            #screen.fill((255, 108, 0))  # 255 for white
-            background = pygame.image.load("Assets/mainbackground.png")
-            screen.blit(background, [0, 0])
+            screen.blit(cur_background, [0, 0])
 
             #all_sprites_list.clear(background, [255, 108, 0])
 
             #all_sprites_list.draw(screen)
             if(gator != None):
-                screen.blit(gator.image, [0, (screen.get_height() - gator.rect.height)])
+#                screen.blit(gator.image, [0, (screen.get_height() - gator.rect.height)])
+                screen.blit(gator.image, [0, 400])
             if(text != None):
-                screen.blit(text, [250,(screen.get_height() - gator.rect.height)])
+                screen.blit(text, [250, 350])
             if(conveyor != None):
                 screen.blit(conveyor.image, [(screen.get_width() - gator.rect.width - 100), screen.get_height() - (gator.rect.height/1.8)])
-#                foodCount = 10
-#                for food in foods:
-#                    screen.blit(food.image, [300, foodCount])
-#                    foodCount += 50
                 food_manager.draw(screen)
             # Flip Display
             pygame.display.flip()
@@ -199,7 +206,7 @@ def main():
     if(float(screen_width)/float(screen_height) == float(4)/float(3)):
         screenSize = (screen_width,screen_height)
     else:
-        screenSize = (800,600)
+        screenSize = (1200, 900)
     pygame.display.set_mode(screenSize)
     pygame.display.set_caption('AngleGators')
     game = AngleGators()
