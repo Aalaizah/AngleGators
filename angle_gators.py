@@ -3,7 +3,7 @@ import pygame
 from gi.repository import Gtk
 import sys
 
-from Food import Food
+from Food import FoodManager, Food
 from FontItem import FontItem, FontButton
 from GameMenu import GameMenu
 
@@ -86,7 +86,7 @@ class AngleGators:
         gator = None
         text = None
         conveyor = None
-        foods = []
+        food_manager = None
 
         while self.running:
             # Pump GTK messages.
@@ -111,10 +111,13 @@ class AngleGators:
                 text = font.render(str(self.angle), True, (33, 69, 30))
                 gator = Alligator(self.alligator())
                 conveyor = Conveyor()
-                foods = []
-                for i in range(0, 13):
-                    newFood = Food(i)
-                    foods.append(newFood)
+                food_manager = FoodManager()
+                food_manager.generate_food()
+                food_manager.generate_food()
+#                foods = []
+#                for i in range(0, 13):
+#                    newFood = Food(i)
+#                    foods.append(newFood)
             elif self.currentState == GameState.Paused:
                 text_items = (FontButton('Resume'),FontButton('Return to Main Menu'), FontButton('Quit'))
                 ps = GameMenu(screen, text_items, 'Game is Paused')
@@ -181,10 +184,10 @@ class AngleGators:
                 screen.blit(text, [250,(screen.get_height() - gator.rect.height)])
             if(conveyor != None):
                 screen.blit(conveyor.image, [(screen.get_width() - gator.rect.width - 100), screen.get_height() - (gator.rect.height/1.8)])
-                foodCount = 10
-                for food in foods:
-                    screen.blit(food.image, [300, foodCount])
-                    foodCount += 50
+#                foodCount = 10
+#                for food in foods:
+#                    screen.blit(food.image, [300, foodCount])
+#                    foodCount += 50
             # Flip Display
             pygame.display.flip()
 

@@ -1,25 +1,68 @@
 import pygame
+import math, random
+
+class FoodManager():
+    def __init__(self):
+        self.food_list = [ { "name": "acorn",
+                      "img": pygame.image.load("Assets/foods/acorn.png"),
+                      "min_angle": 10 },
+                     { "name": "apple",
+                      "img": pygame.image.load("Assets/foods/apple.png"),
+                      "min_angle": 20 },
+                    { "name": "appleslice",
+                      "img": pygame.image.load("Assets/foods/appleslice.png"),
+                      "min_angle": 20 },
+                    { "name": "grapes",
+                      "img": pygame.image.load("Assets/foods/grapes.png"),
+                      "min_angle": 50 },
+                    { "name": "lemon",
+                      "img": pygame.image.load("Assets/foods/lemon.png"),
+                      "min_angle": 30 },
+                    { "name": "onion",
+                      "img": pygame.image.load("Assets/foods/onion.png"),
+                      "min_angle": 40 },
+                    { "name": "orange",
+                      "img": pygame.image.load("Assets/foods/orange.png"),
+                      "min_angle": 40 },
+                    { "name": "orangeslice",
+                      "img": pygame.image.load("Assets/foods/orangeslice.png"),
+                      "min_angle": 20 },
+                    { "name": "peach",
+                      "img": pygame.image.load("Assets/foods/peach.png"),
+                      "min_angle": 30 },
+                    { "name": "strawberry",
+                      "img": pygame.image.load("Assets/foods/strawberry.png"),
+                      "min_angle": 20 },
+                    { "name": "tomato",
+                      "img": pygame.image.load("Assets/foods/tomato.png"),
+                      "min_angle": 30 },
+                    { "name": "watermelon",
+                      "img": pygame.image.load("Assets/foods/watermelon.png"),
+                      "min_angle": 70 },
+                    { "name": "yam",
+                      "img": pygame.image.load("Assets/foods/yam.png"),
+                      "min_angle": 50 },
+                    { "name": "zucchini",
+                      "img": pygame.image.load("Assets/foods/zucchini.png"),
+                      "min_angle": 50 }
+                   ]
+        self.num_foods = len(self.food_list)
+        self.active = []
+
+    def generate_food(self):
+        index = int(math.floor(random.random() * self.num_foods))
+        selected_food = self.food_list[index]
+        new_food = Food(selected_food["name"], selected_food["img"],
+                        selected_food["min_angle"])
+        self.active.append(new_food)
+        print(new_food.name)
 
 class Food(pygame.sprite.Sprite):
     """Food element for game"""
-    def __init__(self, index):
-        # Create an image
-        self.images = [pygame.image.load("Assets/foods/acorn.png"),
-            pygame.image.load("Assets/foods/apple.png"),
-            pygame.image.load("Assets/foods/appleslice.png"),
-            pygame.image.load("Assets/foods/grapes.png"),
-            pygame.image.load("Assets/foods/lemon.png"),
-            pygame.image.load("Assets/foods/onion.png"),
-            pygame.image.load("Assets/foods/orange.png"),
-            pygame.image.load("Assets/foods/orangeslice.png"),
-            pygame.image.load("Assets/foods/peach.png"),
-            pygame.image.load("Assets/foods/strawberry.png"),
-            pygame.image.load("Assets/foods/tomato.png"),
-            pygame.image.load("Assets/foods/watermelon.png"),
-            pygame.image.load("Assets/foods/yam.png"),
-            pygame.image.load("Assets/foods/zucchini.png")]
-        self.image = self.images[index]
-        self.min_angle = 10
+    def __init__(self, name, img, min_angle):
+        self.name = name
+        self.image = img
+        self.min_angle = min_angle
         self.image.convert()
         self.image.set_colorkey((255, 255, 255))
         self.rect = self.image.get_rect()
