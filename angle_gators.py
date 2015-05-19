@@ -86,7 +86,8 @@ class AngleGators:
         gator = None
         text = None
         conveyor = None
-        food_manager = None
+        food_manager = FoodManager()
+        food_manager.generate_food()
 
         while self.running:
             # Pump GTK messages.
@@ -111,13 +112,6 @@ class AngleGators:
                 text = font.render(str(self.angle), True, (33, 69, 30))
                 gator = Alligator(self.alligator())
                 conveyor = Conveyor()
-                food_manager = FoodManager()
-                food_manager.generate_food()
-                food_manager.generate_food()
-#                foods = []
-#                for i in range(0, 13):
-#                    newFood = Food(i)
-#                    foods.append(newFood)
             elif self.currentState == GameState.Paused:
                 text_items = (FontButton('Resume'),FontButton('Return to Main Menu'), FontButton('Quit'))
                 ps = GameMenu(screen, text_items, 'Game is Paused')
@@ -188,6 +182,7 @@ class AngleGators:
 #                for food in foods:
 #                    screen.blit(food.image, [300, foodCount])
 #                    foodCount += 50
+                food_manager.draw(screen)
             # Flip Display
             pygame.display.flip()
 

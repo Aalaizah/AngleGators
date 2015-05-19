@@ -57,6 +57,15 @@ class FoodManager():
         self.active.append(new_food)
         print(new_food.name)
 
+    def draw(self, screen):
+        for food in self.active:
+            screen.blit(food.image, [food.pos_x, food.pos_y])
+            food.move()
+            if(food.pos_x <= 0):
+#                food is off screen
+                self.active.pop(0)
+                self.generate_food()
+
 class Food(pygame.sprite.Sprite):
     """Food element for game"""
     def __init__(self, name, img, min_angle):
@@ -66,6 +75,9 @@ class Food(pygame.sprite.Sprite):
         self.image.convert()
         self.image.set_colorkey((255, 255, 255))
         self.rect = self.image.get_rect()
+        self.pos_x = 800
+        self.pos_y = 300
+        self.speed = -10
 
     def set_min_angle(self, angle):
         """Set the minimum angle required to eat this Food"""
@@ -75,3 +87,6 @@ class Food(pygame.sprite.Sprite):
         """Set the position of this Food"""
         self.pos_x = x
         self.pos_y = y
+
+    def move(self):
+        self.pos_x += self.speed
