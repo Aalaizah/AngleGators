@@ -14,7 +14,7 @@ class Alligator(pygame.sprite.Sprite):
         self.image.set_colorkey((255, 255, 255))
         self.rect = self.image.get_rect()
         self.angle = 0
-        self.angles = [0, 10, 20, 25, 50, 70, 75, 80, 90]
+        self.angles = [0, 10, 20, 30, 40, 50, 70, 90]
 
     def angle_index(self):
         if self.angle == 0:
