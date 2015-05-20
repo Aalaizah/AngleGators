@@ -3,10 +3,8 @@ import pygame
 from gi.repository import Gtk
 import sys
 
-from Food import FoodManager, Food
 from FontItem import FontItem, FontButton
 from Scene import MenuScene, GameScene
-from Alligator import Alligator
 
 class GameState():
 	Menu = 0
