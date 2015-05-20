@@ -96,9 +96,9 @@ class GameScene(Scene):
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     mpos = pygame.mouse.get_pos()
                 elif event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_LEFT:
+                    if event.key == pygame.K_LEFT or event.key == pygame.K_KP4:
                         self.gator.change_angle("up")
-                    elif event.key == pygame.K_RIGHT:
+                    elif event.key == pygame.K_RIGHT or event.key == pygame.K_KP6:
                         self.gator.change_angle("down")
                     elif event.key == pygame.K_ESCAPE:
                         return 'Pause'
