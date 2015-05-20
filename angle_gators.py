@@ -60,7 +60,7 @@ class AngleGators:
         howto_scene = MenuScene(self.screen, howto_scene_items, 'How To Play',
                                 'Assets/mainbackground.png')
 
-        credits_scene_items = (FontItem('Programmers: Melody Kelly, Alex Mack, Alex Russell'),
+        credits_scene_items = (FontItem('Programmers: Melody Kelly, Alex Mack, William Russell'),
                               FontItem('Artwork: Jackie Wiley'),
                               FontButton('Back'))
         credits_scene = MenuScene(self.screen, credits_scene_items, 'Credits',
