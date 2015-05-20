@@ -51,8 +51,8 @@ class AngleGators:
                                 'Assets/playbackground.png')
 
         howto_scene_items = (FontItem('Open the Alligators mouth to eat the object'),
-                              FontItem('Use the left arrow to open it\'s mouth more'),
-                              FontItem('Use the right arrow to close it\'s mouth'),
+                              FontItem('Use the left arrow to open its mouth more'),
+                              FontItem('Use the right arrow to close its mouth'),
                               FontButton('Back'))
         howto_scene = MenuScene(self.screen, howto_scene_items, 'How To Play',
                                 'Assets/mainbackground.png')
