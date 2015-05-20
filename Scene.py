@@ -39,6 +39,8 @@ class GameScene(Scene):
         self.points = 0
         # teeth are lives
         self.teeth = 3
+        self.teeth_label = FontItem('Teeth', pos_x = 1000, pos_y = 100)
+        self.teeth_text = FontItem(str(self.teeth), pos_x = 1000, pos_y = 125)
         self.score_label = FontItem('Score', pos_x=1000, pos_y=50)
         self.score_text = FontItem(str(self.points), pos_x=1000, pos_y=75)
 
@@ -53,6 +55,8 @@ class GameScene(Scene):
         self.screen.blit(self.bg_image, [0, 0])
         self.screen.blit(self.score_label.label, self.score_label.position)
         self.screen.blit(self.score_text.label, self.score_text.position)
+        self.screen.blit(self.teeth_label.label, self.teeth_label.position)
+        self.screen.blit(self.teeth_text.label, self.teeth_text.position)
         colliding_food_angle = self.food_manager.draw(self.screen)
 
         if colliding_food_angle:
@@ -72,9 +76,9 @@ class GameScene(Scene):
                 self.score_text.set_text(str(self.points))
             else:
                 self.teeth -= 1
-                if self.teeth < 0:
+                if self.teeth <= 0:
                     # game over, go to end game
-                    print('game over')
+                    return 'Game Over'
 
         self.gator.draw(self.screen)
         pygame.display.flip()
@@ -97,7 +101,9 @@ class GameScene(Scene):
                         self.gator.change_angle("down")
                     elif event.key == pygame.K_ESCAPE:
                         return 'Pause'
-            self.draw()
+            response = self.draw()
+            if response == 'Game Over':
+                return 'Game Over'
 
 class MenuScene(Scene):
     #                           items is a list of FontItem

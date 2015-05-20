@@ -7,11 +7,13 @@ from FontItem import FontItem, FontButton
 from Scene import MenuScene, GameScene
 
 class GameState():
-	Menu = 0
-	Playing = 1
-	Paused = 2
-	HowTo = 3
-	Credits = 4
+    Menu = 0
+    Playing = 1
+    Paused = 2
+    HowTo = 3
+    Credits = 4
+    Gameover = 5
+
 
 class AngleGators:
     def __init__(self):
@@ -63,11 +65,19 @@ class AngleGators:
         credits_scene = MenuScene(self.screen, credits_scene_items, 'Credits',
                                   'Assets/mainbackground.png')
 
+        gameover_scene_items = (FontItem('Score: '),
+                                FontButton('Restart Game'),
+                                FontButton('Return to Main Menu'),
+                                FontButton('Quit'))
+        gameover_scene = MenuScene(self.screen, gameover_scene_items, 'Game Over',
+                                    'Assets/mainbackground.png')
+
         scenes.insert(GameState.Menu, main_menu_scene)
         scenes.insert(GameState.Playing, game_scene)
         scenes.insert(GameState.Paused, pause_scene)
         scenes.insert(GameState.HowTo, howto_scene)
         scenes.insert(GameState.Credits, credits_scene)
+        scenes.insert(GameState.Gameover, gameover_scene)
 
         return scenes
 
@@ -112,6 +122,8 @@ class AngleGators:
                     return
                 elif response == 'Pause':
                     self.currentState = GameState.Paused
+                elif response == 'Game Over':
+                    self.currentState = GameState.Gameover
             elif self.currentState == GameState.Paused:
                 ps = self.scenes[GameState.Paused]
                 response = ps.run()
@@ -133,6 +145,18 @@ class AngleGators:
                 response = cm.run()
                 if response == 'Back':
                     self.currentState = GameState.Menu
+            elif self.currentState == GameState.Gameover:
+                gom = self.scenes[GameState.Gameover]
+                response = gom.run()
+                if response == 'Restart Game':
+                    self.scenes[GameState.Playing].reset()
+                    self.currentState = GameState.Playing
+                elif response == 'Return to Main Menu':
+                    self.currentState = GameState.Menu
+                    self.scenes[GameState.Playing].reset()
+                elif response == 'Quit':
+                    return
+
             # Pump PyGame messages.
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
