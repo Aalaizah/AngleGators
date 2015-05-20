@@ -34,11 +34,6 @@ class AngleGators:
     def read_file(self, file_path):
         pass
 
-    def change_angle(self, direction):
-        if direction == "up":
-            print(Angles[1])
-        elif direction == "down":
-            print("hi")
     # The main game loop.
     def run(self):
         self.running = True
