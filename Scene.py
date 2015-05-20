@@ -76,6 +76,7 @@ class GameScene(Scene):
                 self.score_text.set_text(str(self.points))
             else:
                 self.teeth -= 1
+                self.teeth_text.set_text(str(self.teeth))
                 if self.teeth <= 0:
                     # game over, go to end game
                     return 'Game Over'
