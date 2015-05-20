@@ -17,11 +17,55 @@ class GameState():
 
 class AngleGators:
     def __init__(self):
+        pygame.init()
+        screen_width = pygame.display.Info().current_w
+        screen_height = pygame.display.Info().current_h
+        if(float(screen_width)/float(screen_height) == float(4)/float(3)):
+            screenSize = (screen_width,screen_height)
+        else:
+            screenSize = (1200, 900)
+        pygame.display.set_mode(screenSize)
+        pygame.display.set_caption('AngleGators')
+
         # Set up a clock for managing the frame rate.
         self.clock = pygame.time.Clock()
 
         self.paused = False
         self.currentState = GameState.Menu
+
+        self.screen = pygame.display.get_surface()
+        self.scenes = self.generate_scenes()
+
+    def generate_scenes(self):
+        scenes = []
+
+        main_menu_items = (FontButton('Start'), FontButton('How to Play'),
+                              FontButton('Credits'), FontButton('Quit'))
+        main_menu_scene = MenuScene(self.screen, main_menu_items, 'AngleGators', 'Assets/mainbackground_tail.png')
+
+        game_scene = GameScene(self.screen)
+
+        pause_scene_items = (FontButton('Resume'),FontButton('Return to Main Menu'), FontButton('Quit'))
+        pause_scene = MenuScene(self.screen, pause_scene_items, 'Game is Paused', 'Assets/playbackground.png')
+
+        howto_scene_items = (FontItem('Open the Alligators mouth to eat the object'),
+                              FontItem('Use the left arrow to open it\'s mouth more'),
+                              FontItem('Use the right arrow to close it\'s mouth'),
+                              FontButton('Back'))
+        howto_scene = MenuScene(self.screen, howto_scene_items, 'How To Play', 'Assets/mainbackground.png')
+
+        credits_scene_items = (FontItem('Programmers: Melody Kelly, Alex Mack, William Russell'),
+                              FontItem('Artwork: Jackie Wiley'),
+                              FontButton('Back'))
+        credits_scene = MenuScene(self.screen, credits_scene_items, 'Credits', 'Assets/mainbackground.png')
+
+        scenes.insert(GameState.Menu, main_menu_scene)
+        scenes.insert(GameState.Playing, game_scene)
+        scenes.insert(GameState.Paused, pause_scene)
+        scenes.insert(GameState.HowTo, howto_scene)
+        scenes.insert(GameState.Credits, credits_scene)
+
+        return scenes
 
     def set_paused(self, paused):
         self.paused = paused
@@ -38,20 +82,13 @@ class AngleGators:
     def run(self):
         self.running = True
 
-        screen = pygame.display.get_surface()
-        font = pygame.font.SysFont(None, 25, True, False)
-        background_imgs = { "main": pygame.image.load("Assets/mainbackground.png"),
-                            "play": pygame.image.load("Assets/playbackground.png")}
-
         while self.running:
             # Pump GTK messages.
             while Gtk.events_pending():
                 Gtk.main_iteration()
 
             if self.currentState == GameState.Menu:
-                menu_items = (FontButton('Start'), FontButton('How to Play'),
-                              FontButton('Credits'), FontButton('Quit'))
-                gm = MenuScene(screen, menu_items, 'AngleGators', 'Assets/mainbackground_tail.png')
+                gm = self.scenes[GameState.Menu]
                 response = gm.run()
                 if response == 'Start':
                     self.currentState = GameState.Playing
@@ -61,9 +98,8 @@ class AngleGators:
                     self.currentState = GameState.Credits
                 elif response == 'Quit':
                     return
-                #print('menu screen')
             elif self.currentState == GameState.Playing:
-                game_scene = GameScene(screen)
+                game_scene = self.scenes[GameState.Playing]
                 response = game_scene.run()
                 if response == 'Quit':
                     pygame.display.quit()
@@ -73,8 +109,7 @@ class AngleGators:
                 elif response == 'Pause':
                     self.currentState = GameState.Paused
             elif self.currentState == GameState.Paused:
-                text_items = (FontButton('Resume'),FontButton('Return to Main Menu'), FontButton('Quit'))
-                ps = MenuScene(screen, text_items, 'Game is Paused', 'Assets/playbackground.png')
+                ps = self.scenes[GameState.Paused]
                 response = ps.run()
                 if response == 'Resume':
                     self.currentState = GameState.Playing
@@ -84,20 +119,12 @@ class AngleGators:
                     return
                 self.paused = True
             elif self.currentState == GameState.HowTo:
-                text_items = (FontItem('Open the Alligators mouth to eat the object'),
-                              FontItem('Use the left arrow to open it\'s mouth more'),
-                              FontItem('Use the right arrow to close it\'s mouth'),
-                              FontButton('Back'))
-                ht = MenuScene(screen, text_items, 'How To Play', 'Assets/mainbackground.png')
+                ht = self.scenes[GameState.HowTo]
                 response = ht.run()
                 if response == 'Back':
                     self.currentState = GameState.Menu
             elif self.currentState == GameState.Credits:
-                #print('Credits')
-                text_items = (FontItem('Programmers: Melody Kelly, Alex Mack, William Russell'),
-                              FontItem('Artwork: Jackie Wiley'),
-                              FontButton('Back'))
-                cm = MenuScene(screen, text_items, 'Credits', 'Assets/mainbackground.png')
+                cm = self.scenes[GameState.Credits]
                 response = cm.run()
                 if response == 'Back':
                     self.currentState = GameState.Menu
@@ -108,24 +135,6 @@ class AngleGators:
                     pygame.quit()
                     sys.exit()
                     return
-                elif event.type == pygame.VIDEORESIZE:
-                    pygame.display.set_mode(event.size, pygame.RESIZABLE)
-                elif event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_LEFT:
-                        if self.angle < 90:
-                            self.angle = self.angles[self.angles.index(self.angle) + 1]
-                        else:
-                            self.angle = 90
-                    elif event.key == pygame.K_RIGHT:
-                        if self.angle > 0:
-                            self.angle = self.angles[self.angles.index(self.angle) - 1]
-                        else:
-                            self.angle = 0
-                    elif event.key == pygame.K_ESCAPE:
-                        self.currentState = GameState.Paused
-
-            # Clear Display
-#            screen.blit(cur_background, [0, 0])
 
             #all_sprites_list.clear(background, [255, 108, 0])
 
@@ -138,15 +147,6 @@ class AngleGators:
 # This function is called when the game is run directly from the command line:
 # ./angle_gators.py
 def main():
-    pygame.init()
-    screen_width = pygame.display.Info().current_w
-    screen_height = pygame.display.Info().current_h
-    if(float(screen_width)/float(screen_height) == float(4)/float(3)):
-        screenSize = (screen_width,screen_height)
-    else:
-        screenSize = (1200, 900)
-    pygame.display.set_mode(screenSize)
-    pygame.display.set_caption('AngleGators')
     game = AngleGators()
     game.run()
 
