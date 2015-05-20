@@ -41,23 +41,29 @@ class AngleGators:
 
         main_menu_items = (FontButton('Start'), FontButton('How to Play'),
                               FontButton('Credits'), FontButton('Quit'))
-        main_menu_scene = MenuScene(self.screen, main_menu_items, 'AngleGators', 'Assets/mainbackground_tail.png')
+        main_menu_scene = MenuScene(self.screen, main_menu_items, 'AngleGators',
+                                    'Assets/mainbackground_tail.png')
 
         game_scene = GameScene(self.screen)
 
-        pause_scene_items = (FontButton('Resume'),FontButton('Return to Main Menu'), FontButton('Quit'))
-        pause_scene = MenuScene(self.screen, pause_scene_items, 'Game is Paused', 'Assets/playbackground.png')
+        pause_scene_items = (FontButton('Resume'),
+                             FontButton('Return to Main Menu'),
+                             FontButton('Quit'))
+        pause_scene = MenuScene(self.screen, pause_scene_items, 'Game is Paused',
+                                'Assets/playbackground.png')
 
         howto_scene_items = (FontItem('Open the Alligators mouth to eat the object'),
                               FontItem('Use the left arrow to open it\'s mouth more'),
                               FontItem('Use the right arrow to close it\'s mouth'),
                               FontButton('Back'))
-        howto_scene = MenuScene(self.screen, howto_scene_items, 'How To Play', 'Assets/mainbackground.png')
+        howto_scene = MenuScene(self.screen, howto_scene_items, 'How To Play',
+                                'Assets/mainbackground.png')
 
         credits_scene_items = (FontItem('Programmers: Melody Kelly, Alex Mack, William Russell'),
                               FontItem('Artwork: Jackie Wiley'),
                               FontButton('Back'))
-        credits_scene = MenuScene(self.screen, credits_scene_items, 'Credits', 'Assets/mainbackground.png')
+        credits_scene = MenuScene(self.screen, credits_scene_items, 'Credits',
+                                  'Assets/mainbackground.png')
 
         scenes.insert(GameState.Menu, main_menu_scene)
         scenes.insert(GameState.Playing, game_scene)
