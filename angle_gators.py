@@ -42,7 +42,7 @@ class AngleGators:
 
         self.paused = False
         self.currentState = GameState.Menu
-        self.angle = 0 
+        self.angle = 0
         self.angles = [0, 10, 20, 25, 50, 70, 75, 80, 90]
 
     def set_paused(self, paused):
@@ -99,7 +99,7 @@ class AngleGators:
             if self.currentState == GameState.Menu:
                 menu_items = (FontButton('Start'), FontButton('How to Play'),
                               FontButton('Credits'), FontButton('Quit'))
-                gm = GameMenu(screen, menu_items, 'AngleGators')
+                gm = GameMenu(screen, menu_items, 'AngleGators', 'Assets/mainbackground.png')
                 cur_background = background_imgs["main"]
                 response = gm.run()
                 if response == 'Start':
@@ -120,7 +120,7 @@ class AngleGators:
                     food_manager.generate_food()
             elif self.currentState == GameState.Paused:
                 text_items = (FontButton('Resume'),FontButton('Return to Main Menu'), FontButton('Quit'))
-                ps = GameMenu(screen, text_items, 'Game is Paused')
+                ps = GameMenu(screen, text_items, 'Game is Paused', 'Assets/playbackground.png')
 #                cur_background = background_imgs["play"]
                 response = ps.run()
                 if response == 'Resume':
@@ -138,7 +138,7 @@ class AngleGators:
                               FontItem('Use the left arrow to open it\'s mouth more'),
                               FontItem('Use the right arrow to close it\'s mouth'),
                               FontButton('Back'))
-                ht = GameMenu(screen, text_items, 'How To Play')
+                ht = GameMenu(screen, text_items, 'How To Play', 'Assets/mainbackground.png')
                 cur_background = background_imgs["main"]
                 response = ht.run()
                 if response == 'Back':
@@ -148,7 +148,7 @@ class AngleGators:
                 text_items = (FontItem('Programmers: Melody Kelly, Alex Mack, William Russell'),
                               FontItem('Artwork: Jackie Wiley'),
                               FontButton('Back'))
-                cm = GameMenu(screen, text_items, 'Credits')
+                cm = GameMenu(screen, text_items, 'Credits', 'Assets/mainbackground.png')
                 cur_background = background_imgs["main"]
                 response = cm.run()
                 if response == 'Back':
