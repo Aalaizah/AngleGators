@@ -29,7 +29,6 @@ class AngleGators:
 
         self.paused = False
         self.currentState = GameState.Menu
-        self.angles = [0, 10, 20, 25, 50, 70, 75, 80, 90]
 
     def set_paused(self, paused):
         self.paused = paused

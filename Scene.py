@@ -58,17 +58,9 @@ class GameScene(Scene):
                     mpos = pygame.mouse.get_pos()
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_LEFT:
-#                        if self.angle < 90:
-#                            self.angle = self.angles[self.angles.index(self.angle) + 1]
-#                        else:
-#                            self.angle = 90
-                        print('left')
+                        self.gator.change_angle("up")
                     elif event.key == pygame.K_RIGHT:
-#                        if self.angle > 0:
-#                            self.angle = self.angles[self.angles.index(self.angle) - 1]
-#                        else:
-#                            self.angle = 0
-                        print('right')
+                        self.gator.change_angle("down")
                     elif event.key == pygame.K_ESCAPE:
                         return 'Pause'
             self.draw()

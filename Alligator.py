@@ -14,6 +14,7 @@ class Alligator(pygame.sprite.Sprite):
         self.image.set_colorkey((255, 255, 255))
         self.rect = self.image.get_rect()
         self.angle = 0
+        self.angles = [0, 10, 20, 25, 50, 70, 75, 80, 90]
 
     def angle_index(self):
         if self.angle == 0:
@@ -32,8 +33,20 @@ class Alligator(pygame.sprite.Sprite):
             # Mouth is all the way open
             return 4
 
+    def change_angle(self, direction):
+        if direction == "up":
+            if self.angle < 90:
+                self.angle = self.angles[self.angles.index(self.angle) + 1]
+            else:
+                self.angle = 90
+        elif direction == "down":
+            if self.angle > 0:
+                self.angle = self.angles[self.angles.index(self.angle) - 1]
+            else:
+                self.angle = 0
+
     def draw(self, screen):
         font = pygame.font.SysFont(None, 25, True, False)
         text = font.render(str(self.angle), True, (33, 69, 30))
         screen.blit(text, [250, 350])
-        screen.blit(self.image, [0, 400])
+        screen.blit(self.images[self.angle_index()], [0, 400])
