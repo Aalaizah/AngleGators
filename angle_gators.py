@@ -59,7 +59,6 @@ class AngleGators:
         food_manager = FoodManager()
         background_imgs = { "main": pygame.image.load("Assets/mainbackground.png"),
                             "play": pygame.image.load("Assets/playbackground.png")}
-        cur_background = background_imgs["main"]
 
         while self.running:
             # Pump GTK messages.
@@ -70,7 +69,6 @@ class AngleGators:
                 menu_items = (FontButton('Start'), FontButton('How to Play'),
                               FontButton('Credits'), FontButton('Quit'))
                 gm = MenuScene(screen, menu_items, 'AngleGators', 'Assets/mainbackground.png')
-                cur_background = background_imgs["main"]
                 response = gm.run()
                 if response == 'Start':
                     self.currentState = GameState.Playing
@@ -82,9 +80,7 @@ class AngleGators:
                     return
                 #print('menu screen')
             elif self.currentState == GameState.Playing:
-                cur_background = background_imgs["play"]
                 game_scene = GameScene(screen)
-                #gator = Alligator(self.alligator())
                 response = game_scene.run()
                 if response == 'Quit':
                     pygame.display.quit()
@@ -93,20 +89,14 @@ class AngleGators:
                     return
                 elif response == 'Pause':
                     self.currentState = GameState.Paused
-#                conveyor = Conveyor()
-                if(not food_manager.isStarted):
-                    food_manager.generate_food()
             elif self.currentState == GameState.Paused:
                 text_items = (FontButton('Resume'),FontButton('Return to Main Menu'), FontButton('Quit'))
                 ps = MenuScene(screen, text_items, 'Game is Paused', 'Assets/playbackground.png')
-#                cur_background = background_imgs["play"]
                 response = ps.run()
                 if response == 'Resume':
                     self.currentState = GameState.Playing
                 elif response == 'Return to Main Menu':
                     self.currentState = GameState.Menu
-#                    gator = None
-#                    conveyor = None
                     food_manager.reset()
                 elif response == 'Quit':
                     return
@@ -117,7 +107,6 @@ class AngleGators:
                               FontItem('Use the right arrow to close it\'s mouth'),
                               FontButton('Back'))
                 ht = MenuScene(screen, text_items, 'How To Play', 'Assets/mainbackground.png')
-                cur_background = background_imgs["main"]
                 response = ht.run()
                 if response == 'Back':
                     self.currentState = GameState.Menu
@@ -127,7 +116,6 @@ class AngleGators:
                               FontItem('Artwork: Jackie Wiley'),
                               FontButton('Back'))
                 cm = MenuScene(screen, text_items, 'Credits', 'Assets/mainbackground.png')
-                cur_background = background_imgs["main"]
                 response = cm.run()
                 if response == 'Back':
                     self.currentState = GameState.Menu
@@ -160,16 +148,6 @@ class AngleGators:
             #all_sprites_list.clear(background, [255, 108, 0])
 
             #all_sprites_list.draw(screen)
-#            if(gator != None):
-##                screen.blit(gator.image, [0, (screen.get_height() - gator.rect.height)])
-#                screen.blit(gator.image, [0, 400])
-#            if(text != None):
-#                screen.blit(text, [250, 350])
-#            if(conveyor != None):
-#                screen.blit(conveyor.image, [(screen.get_width() - gator.rect.width - 100), screen.get_height() - (gator.rect.height/1.8)])
-#                food_manager.draw(screen)
-            # Flip Display
-#            pygame.display.flip()
 
             # Try to stay at 30 FPS
             self.clock.tick(30)
