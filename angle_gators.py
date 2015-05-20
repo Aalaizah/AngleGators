@@ -15,13 +15,6 @@ class GameState():
 	HowTo = 3
 	Credits = 4
 
-class Conveyor(pygame.sprite.Sprite):
-    def __init__(self):
-        #load conveyor image
-        self.image = pygame.image.load("Assets/environment/conveyorbelt.png")
-        self.image.convert()
-        self.rect = self.image.get_rect()
-
 class AngleGators:
     def __init__(self):
         # Set up a clock for managing the frame rate.
@@ -52,10 +45,6 @@ class AngleGators:
 
         screen = pygame.display.get_surface()
         font = pygame.font.SysFont(None, 25, True, False)
-        gator = None
-        text = None
-        conveyor = None
-        food_manager = FoodManager()
         background_imgs = { "main": pygame.image.load("Assets/mainbackground.png"),
                             "play": pygame.image.load("Assets/playbackground.png")}
 
@@ -96,7 +85,6 @@ class AngleGators:
                     self.currentState = GameState.Playing
                 elif response == 'Return to Main Menu':
                     self.currentState = GameState.Menu
-                    food_manager.reset()
                 elif response == 'Quit':
                     return
                 self.paused = True

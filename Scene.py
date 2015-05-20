@@ -62,6 +62,7 @@ class GameScene(Scene):
                     elif event.key == pygame.K_RIGHT:
                         self.gator.change_angle("down")
                     elif event.key == pygame.K_ESCAPE:
+                        self.food_manager.reset()
                         return 'Pause'
             self.draw()
 
