@@ -56,7 +56,7 @@ class AngleGators:
             if self.currentState == GameState.Menu:
                 menu_items = (FontButton('Start'), FontButton('How to Play'),
                               FontButton('Credits'), FontButton('Quit'))
-                gm = MenuScene(screen, menu_items, 'AngleGators', 'Assets/mainbackground.png')
+                gm = MenuScene(screen, menu_items, 'AngleGators', 'Assets/mainbackground_tail.png')
                 response = gm.run()
                 if response == 'Start':
                     self.currentState = GameState.Playing

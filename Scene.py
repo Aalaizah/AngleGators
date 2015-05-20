@@ -75,7 +75,7 @@ class MenuScene(Scene):
         self.font = pygame.font.SysFont(font, font_size)
         self.font_color = font_color
 
-        self.title = FontItem(title, 60)
+        self.title = FontItem(title, 120)
 
         #self.title_label = pygame.font.Font.render(self.title, 1, self.font_color)
         self.title_pos_x = (self.scr_width / 2) - (self.title.width / 2)
