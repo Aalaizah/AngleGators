@@ -5,7 +5,8 @@ import sys
 
 from Food import FoodManager, Food
 from FontItem import FontItem, FontButton
-from GameMenu import GameMenu
+from Scene import MenuScene, GameScene
+from Alligator import Alligator
 
 class GameState():
 	Menu = 0
@@ -13,20 +14,6 @@ class GameState():
 	Paused = 2
 	HowTo = 3
 	Credits = 4
-
-class Alligator(pygame.sprite.Sprite):
-    def __init__(self, currentImage):
-        #super().__init__()
-        # Create an image
-        self.images = [pygame.image.load("Assets/gator0.png"), 
-            pygame.image.load("Assets/gator20.png"),
-            pygame.image.load("Assets/gator45.png"),
-            pygame.image.load("Assets/gator70.png"),
-            pygame.image.load("Assets/gator90.png")]
-        self.image = self.images[currentImage]
-        self.image.convert()
-        self.image.set_colorkey((255, 255, 255))
-        self.rect = self.image.get_rect()
 
 class Conveyor(pygame.sprite.Sprite):
     def __init__(self):
@@ -99,7 +86,7 @@ class AngleGators:
             if self.currentState == GameState.Menu:
                 menu_items = (FontButton('Start'), FontButton('How to Play'),
                               FontButton('Credits'), FontButton('Quit'))
-                gm = GameMenu(screen, menu_items, 'AngleGators', 'Assets/mainbackground.png')
+                gm = MenuScene(screen, menu_items, 'AngleGators', 'Assets/mainbackground.png')
                 cur_background = background_imgs["main"]
                 response = gm.run()
                 if response == 'Start':
@@ -113,14 +100,23 @@ class AngleGators:
                 #print('menu screen')
             elif self.currentState == GameState.Playing:
                 cur_background = background_imgs["play"]
+                game_scene = GameScene(screen)
                 text = font.render(str(self.angle), True, (33, 69, 30))
                 gator = Alligator(self.alligator())
+                response = game_scene.run()
+                if response == 'Quit':
+                    pygame.display.quit()
+                    pygame.quit()
+                    sys.exit()
+                    return
+                elif response == 'Pause':
+                    self.currentState = GameState.Paused
                 conveyor = Conveyor()
                 if(not food_manager.isStarted):
                     food_manager.generate_food()
             elif self.currentState == GameState.Paused:
                 text_items = (FontButton('Resume'),FontButton('Return to Main Menu'), FontButton('Quit'))
-                ps = GameMenu(screen, text_items, 'Game is Paused', 'Assets/playbackground.png')
+                ps = MenuScene(screen, text_items, 'Game is Paused', 'Assets/playbackground.png')
 #                cur_background = background_imgs["play"]
                 response = ps.run()
                 if response == 'Resume':
@@ -138,7 +134,7 @@ class AngleGators:
                               FontItem('Use the left arrow to open it\'s mouth more'),
                               FontItem('Use the right arrow to close it\'s mouth'),
                               FontButton('Back'))
-                ht = GameMenu(screen, text_items, 'How To Play', 'Assets/mainbackground.png')
+                ht = MenuScene(screen, text_items, 'How To Play', 'Assets/mainbackground.png')
                 cur_background = background_imgs["main"]
                 response = ht.run()
                 if response == 'Back':
@@ -148,7 +144,7 @@ class AngleGators:
                 text_items = (FontItem('Programmers: Melody Kelly, Alex Mack, William Russell'),
                               FontItem('Artwork: Jackie Wiley'),
                               FontButton('Back'))
-                cm = GameMenu(screen, text_items, 'Credits', 'Assets/mainbackground.png')
+                cm = MenuScene(screen, text_items, 'Credits', 'Assets/mainbackground.png')
                 cur_background = background_imgs["main"]
                 response = cm.run()
                 if response == 'Back':
@@ -165,7 +161,7 @@ class AngleGators:
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_LEFT:
                         if self.angle < 90:
-                         self.angle = self.angles[self.angles.index(self.angle) + 1]
+                            self.angle = self.angles[self.angles.index(self.angle) + 1]
                         else:
                             self.angle = 90
                     elif event.key == pygame.K_RIGHT:
