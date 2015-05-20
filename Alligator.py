@@ -48,5 +48,5 @@ class Alligator(pygame.sprite.Sprite):
     def draw(self, screen):
         font = pygame.font.SysFont(None, 25, True, False)
         text = font.render(str(self.angle), True, (33, 69, 30))
-        screen.blit(text, [250, 350])
+        screen.blit(text, [390, 380])
         screen.blit(self.images[self.angle_index()], [0, 400])
