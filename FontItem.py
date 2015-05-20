@@ -32,6 +32,11 @@ class FontItem(pygame.font.Font):
         self.pos_y = y
         self.label = self.render(self.text, 1, self.font_color)
 
+    def set_text(self, value):
+        """Update text value, re-renders with updated text value"""
+        self.text = value
+        self.label = self.render(self.text, 1, self.font_color)
+
     def set_font_color(self, rgb_tuple):
         """Update colof of FontItem"""
         self.font_color = rgb_tuple

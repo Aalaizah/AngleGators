@@ -36,12 +36,48 @@ class GameScene(Scene):
         super(GameScene, self).__init__(screen, bg_image, font, font_size, font_color)
         self.gator = Alligator(0)
         self.food_manager = FoodManager()
+        self.points = 0
+        # teeth are lives
+        self.teeth = 3
+        self.score_label = FontItem('Score', pos_x=1000, pos_y=50)
+        self.score_text = FontItem(str(self.points), pos_x=1000, pos_y=75)
+
+    def reset(self):
+        self.food_manager.reset()
+        self.gator.angle = 0
+        self.points = 0
+        self.teeth = 3
 
     def draw(self):
         # Redraw the background
         self.screen.blit(self.bg_image, [0, 0])
+        self.screen.blit(self.score_label.label, self.score_label.position)
+        self.screen.blit(self.score_text.label, self.score_text.position)
+        colliding_food_angle = self.food_manager.draw(self.screen)
+
+        if colliding_food_angle:
+            if self.gator.angle == 0:
+                # food is too big or gator isn't eating
+                print('no food for me')
+            if self.gator.angle >= colliding_food_angle:
+                # mouth is open wide enough
+                if self.gator.angle == colliding_food_angle:
+                    self.points += 20
+                elif (self.gator.angle - colliding_food_angle) <= 10:
+                    self.points += 10
+                elif (self.gator.angle - colliding_food_angle) <= 20:
+                    self.points += 5
+                else:
+                    self.points += 1
+                self.score_text.set_text(str(self.points))
+            else:
+                self.teeth -= 1
+                if self.teeth < 0:
+                    # game over, go to end game
+                    print('game over')
+            print(colliding_food_angle)
+
         self.gator.draw(self.screen)
-        self.food_manager.draw(self.screen)
         pygame.display.flip()
 
     def run(self):
@@ -52,7 +88,6 @@ class GameScene(Scene):
                 self.food_manager.generate_food()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    print('quitting')
                     return 'Quit'
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     mpos = pygame.mouse.get_pos()
@@ -62,7 +97,6 @@ class GameScene(Scene):
                     elif event.key == pygame.K_RIGHT:
                         self.gator.change_angle("down")
                     elif event.key == pygame.K_ESCAPE:
-                        self.food_manager.reset()
                         return 'Pause'
             self.draw()
 

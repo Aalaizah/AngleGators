@@ -119,6 +119,7 @@ class AngleGators:
                     self.currentState = GameState.Playing
                 elif response == 'Return to Main Menu':
                     self.currentState = GameState.Menu
+                    self.scenes[GameState.Playing].reset()
                 elif response == 'Quit':
                     return
                 self.paused = True
