@@ -40,13 +40,16 @@ class GameScene(Scene):
     def draw(self):
         # Redraw the background
         self.screen.blit(self.bg_image, [0, 0])
-
+        self.gator.draw(self.screen)
+        self.food_manager.draw(self.screen)
         pygame.display.flip()
 
     def run(self):
         while True:
             # Limit frame speed to 50 fps
             self.clock.tick(50)
+            if not self.food_manager.is_started:
+                self.food_manager.generate_food()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     print('quitting')

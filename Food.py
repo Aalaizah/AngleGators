@@ -48,10 +48,10 @@ class FoodManager():
                    ]
         self.num_foods = len(self.food_list)
         self.active = []
-        self.isStarted = False
+        self.is_started = False
 
     def generate_food(self):
-        self.isStarted = True
+        self.is_started = True
         index = int(math.floor(random.random() * self.num_foods))
         selected_food = self.food_list[index]
         new_food = Food(selected_food["name"], selected_food["img"],
@@ -70,7 +70,7 @@ class FoodManager():
 
     def reset(self):
         self.active = []
-        self.isStarted = False
+        self.is_started = False
 
 class Food(pygame.sprite.Sprite):
     """Food element for game"""

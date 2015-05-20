@@ -29,7 +29,6 @@ class AngleGators:
 
         self.paused = False
         self.currentState = GameState.Menu
-        self.angle = 0
         self.angles = [0, 10, 20, 25, 50, 70, 75, 80, 90]
 
     def set_paused(self, paused):
@@ -43,22 +42,6 @@ class AngleGators:
     def read_file(self, file_path):
         pass
 
-    def alligator(self):
-        if self.angle == 0:
-            # image is mouth shut
-            return 0
-        elif self.angle > 0 and self.angle < 30:
-            # image is mouth slightly open
-            return 1
-        elif self.angle > 29 and self.angle < 60:
-            # image is mouth halfway open
-            return 2
-        elif self.angle > 59 and self.angle < 90:
-            # Mouth is mostly open
-            return 3
-        elif self.angle == 90:
-            # Mouth is all the way open
-            return 4
     def change_angle(self, direction):
         if direction == "up":
             print(Angles[1])
@@ -101,8 +84,7 @@ class AngleGators:
             elif self.currentState == GameState.Playing:
                 cur_background = background_imgs["play"]
                 game_scene = GameScene(screen)
-                text = font.render(str(self.angle), True, (33, 69, 30))
-                gator = Alligator(self.alligator())
+                #gator = Alligator(self.alligator())
                 response = game_scene.run()
                 if response == 'Quit':
                     pygame.display.quit()
@@ -111,7 +93,7 @@ class AngleGators:
                     return
                 elif response == 'Pause':
                     self.currentState = GameState.Paused
-                conveyor = Conveyor()
+#                conveyor = Conveyor()
                 if(not food_manager.isStarted):
                     food_manager.generate_food()
             elif self.currentState == GameState.Paused:
@@ -173,21 +155,21 @@ class AngleGators:
                         self.currentState = GameState.Paused
 
             # Clear Display
-            screen.blit(cur_background, [0, 0])
+#            screen.blit(cur_background, [0, 0])
 
             #all_sprites_list.clear(background, [255, 108, 0])
 
             #all_sprites_list.draw(screen)
-            if(gator != None):
-#                screen.blit(gator.image, [0, (screen.get_height() - gator.rect.height)])
-                screen.blit(gator.image, [0, 400])
-            if(text != None):
-                screen.blit(text, [250, 350])
-            if(conveyor != None):
-                screen.blit(conveyor.image, [(screen.get_width() - gator.rect.width - 100), screen.get_height() - (gator.rect.height/1.8)])
-                food_manager.draw(screen)
+#            if(gator != None):
+##                screen.blit(gator.image, [0, (screen.get_height() - gator.rect.height)])
+#                screen.blit(gator.image, [0, 400])
+#            if(text != None):
+#                screen.blit(text, [250, 350])
+#            if(conveyor != None):
+#                screen.blit(conveyor.image, [(screen.get_width() - gator.rect.width - 100), screen.get_height() - (gator.rect.height/1.8)])
+#                food_manager.draw(screen)
             # Flip Display
-            pygame.display.flip()
+#            pygame.display.flip()
 
             # Try to stay at 30 FPS
             self.clock.tick(30)
