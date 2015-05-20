@@ -1,5 +1,6 @@
 import pygame
 import math, random
+from FontItem import FontItem
 
 class FoodManager():
     def __init__(self):
@@ -57,10 +58,12 @@ class FoodManager():
         new_food = Food(selected_food["name"], selected_food["img"],
                         selected_food["min_angle"])
         self.active.append(new_food)
-        print(new_food.name)
+        print(new_food.min_angle)
 
     def draw(self, screen):
         for food in self.active:
+            text = FontItem(str(food.min_angle))
+            screen.blit(text.label, [food.pos_x, (food.pos_y - 50)])
             screen.blit(food.image, [food.pos_x, food.pos_y])
             food.move()
             if(food.pos_x <= 0):
