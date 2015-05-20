@@ -75,7 +75,6 @@ class GameScene(Scene):
                 if self.teeth < 0:
                     # game over, go to end game
                     print('game over')
-            print(colliding_food_angle)
 
         self.gator.draw(self.screen)
         pygame.display.flip()
