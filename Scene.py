@@ -104,7 +104,7 @@ class GameScene(Scene):
                         return 'Pause'
             response = self.draw()
             if response == 'Game Over':
-                return 'Game Over'
+                return ('Game Over', self.points)
 
 class MenuScene(Scene):
     #                           items is a list of FontItem

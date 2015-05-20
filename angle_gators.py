@@ -32,6 +32,7 @@ class AngleGators:
 
         self.paused = False
         self.currentState = GameState.Menu
+        self.finalScore = 0
 
         self.screen = pygame.display.get_surface()
         self.scenes = self.generate_scenes()
@@ -122,8 +123,9 @@ class AngleGators:
                     return
                 elif response == 'Pause':
                     self.currentState = GameState.Paused
-                elif response == 'Game Over':
-                    self.currentState = GameState.Gameover
+                elif response[0] == 'Game Over':
+                    self.finalScore = response[1]
+                    self.currentState = GameState.Gameover 
             elif self.currentState == GameState.Paused:
                 ps = self.scenes[GameState.Paused]
                 response = ps.run()
@@ -146,7 +148,14 @@ class AngleGators:
                 if response == 'Back':
                     self.currentState = GameState.Menu
             elif self.currentState == GameState.Gameover:
-                gom = self.scenes[GameState.Gameover]
+                gameover_scene_items = (FontItem(('Score: ' + str(self.finalScore))),
+                                FontButton('Restart Game'),
+                                FontButton('Return to Main Menu'),
+                                FontButton('Quit'))
+
+                gom = MenuScene(self.screen, gameover_scene_items, 'Game Over',
+                                    'Assets/mainbackground.png')
+                
                 response = gom.run()
                 if response == 'Restart Game':
                     self.scenes[GameState.Playing].reset()
